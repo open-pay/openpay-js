@@ -1,0 +1,365 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es-ES">
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type='text/javascript' src="openpay.v1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	function setDisableElements(_status){
+		$('.disableOnSubmit').attr('disabled', _status);
+	};
+	function displayResults(_message, _response, _sandboxMode) {
+		setDisableElements(false);
+		$('#response').text(_message + (_response !== null ? ' ' + JSON.stringify(_response) : ''));
+	};
+	function success(_responseData) {
+		displayResults('Request proceessed successfully: ', _responseData);
+	};
+	function error(_errorResponseData){
+		displayResults('An error has been ocurred: ', _errorResponseData);
+	};
+	function call() {
+		var _id = '', _apiKey = '', _data = null;
+
+		setDisableElements(true);
+		$('#response').text('');
+
+		OpenPay.setSandboxMode( ($('#mode').val() == 'true' ? true : false) );
+		$('#responseMode').text( '(' + (OpenPay.getSandboxMode() ? 'sandbox' : 'production') + ' mode)' );
+
+		_id = $('#id').val();
+		_apiKey = $('#apiKey').val();
+		try {
+			_data = JSON.parse(JSON.stringify(eval("(" + $('#data').val() + ")")));
+			OpenPay.setId(_id);
+			OpenPay.setApiKey(_apiKey);
+			OpenPay.card.charge(_data, success, error);
+		} catch (e) {
+			setDisableElements(true);
+			displayResults('Request failed (invalid data)', null);
+		}
+	};
+	
+	$('#makeRequest').click(function(e){
+		call();
+	});
+	
+	function displayResultsCard(_message, _response, _sandboxMode) {
+		setDisableElements(false);
+		$('#responseCard').text(_message + (_response !== null ? ' ' + JSON.stringify(_response) : ''));
+	};
+	
+	function successCard(_responseData) {
+		displayResultsCard('Request proceessed successfully: ', _responseData);
+	};
+	function errorCard(_errorResponseData){
+		displayResultsCard('An error has been ocurred: ', _errorResponseData);
+	};
+	
+	function callCard() {
+		var _id = '', _apiKey = '', _data = null, _customerId = '';
+		
+		setDisableElements(true);
+		$('#responseCard').text('');
+
+		OpenPay.setSandboxMode( ($('#mode').val() == 'true' ? true : false) );
+		$('#responseMode').text( '(' + (OpenPay.getSandboxMode() ? 'sandbox' : 'production') + ' mode)' );
+
+		_id = $('#id').val();
+		_apiKey = $('#apiKey').val();
+		_customerId = $('#customerId').val();
+		
+		try {
+			_data = JSON.parse(JSON.stringify(eval("(" + $('#dataCard').val() + ")")));
+			OpenPay.setId(_id);
+			OpenPay.setApiKey(_apiKey);
+			OpenPay.setCustomerId(_customerId);
+			OpenPay.card.create(_data, successCard, errorCard);
+		} catch (e) {
+			setDisableElements(true);
+			displayResults('Request failed (invalid data)', null);
+		}
+	};
+	
+	$('#makeRequestCard').click(function(e){
+		callCard();
+	});
+	
+	
+	// --------------------------
+	
+	function validate() {
+		alert('validando...')
+		var _number = '', _cvc = '', _month = '', _year = '', _type = '';
+		setDisableElements(true);
+
+		$('#valid').prop('checked', false);
+		$('#accepted').prop('checked', false);
+		$('#cvcValid').prop('checked', false);
+		$('#cvcExpiry').prop('checked', false);
+		$('#typeNumber').prop('checked', false);
+		$('#typeName').text('');
+		
+		_number = ($('#cardNumber').val() != '' ? $('#cardNumber').val() : $('#cardTypes').val());
+		_cvc = $('#cvc').val();
+		_month = $('#expiryMonth').val();
+		_year = $('#expiryYear').val();
+		
+		if (OpenPay.card.validateCardNumber(_number)) {
+			$('#valid').prop('checked', true);
+
+			_type = OpenPay.card.cardType(_number);
+			if (_type != '') {
+				$('#typeNumber').prop('checked', true);
+				$('#typeName').text('[' + _type.toUpperCase() + ']');
+			} else {
+				$('#typeName').text('UNKNOWN');
+			}
+		}
+		if (OpenPay.card.validateAcceptCardNumber(_number)) {
+			$('#accepted').prop('checked', true);
+		}
+		if (OpenPay.card.validateCVC(_cvc)) {
+			$('#cvcValid').prop('checked', true);
+		}
+		if (OpenPay.card.validateExpiry(_month, _year)) {
+			$('#cvcExpiry').prop('checked', true);
+		}
+		setDisableElements(false);
+	}
+	
+	$('#makeValidation').click(function(e){
+		validate();
+	});
+	
+	
+});
+</script>
+<style type="text/css">
+.tableCell {
+	width: 48%;
+	display: table-cell;
+	padding: 10px;
+}
+.tableRow {
+	width: 800px;
+	display: table-row;
+}
+p {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #333;
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 8px;
+	margin-left: 0px;
+}
+.table {
+	display: table;
+	width: 800px;
+	padding: 5px;
+	margin: 0px;
+}
+.inputText {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	width: 100%;
+}
+.inputTextarea {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	height: 280px;
+	width: 100%;
+}
+label {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+</style>
+<body>
+<h1>OpenPay Javascript API Library Test</h1>
+
+<div class="table">
+	<div class="tableRow">
+		<div class="tableCell">
+			<p>Mode:</p>
+			<select id="mode" class="inputSelect disableOnSubmit">
+				<option value="true">Sandbox</option>
+				<option value="false">Production</option>
+			</select>
+		</div>
+	</div>
+	<div class="tableRow">
+		<div class="tableCell">
+			<p>Merchant ID:</p>
+			<input type="text" class="inputText disableOnSubmit" id="id" value="mqxn16kmicqj2fde6fhi" size="50" />
+		</div>
+		<div class="tableCell">
+			<p>Request API Key:</p>
+			<input type="text" class="inputText disableOnSubmit" id="apiKey" value="pk_c74367b872364e91b3143c5d87d64bb8" size="50" />
+		</div>
+	</div>
+</div>
+<div class="table">
+	<fieldset>
+  <legend>Make a Charge:</legend>
+	<div class="tableRow">
+		<div class="tableCell">
+			<p>Charge Request data <span id="responseMode" />:</p>
+			<textarea id="data" class="inputTextarea disableOnSubmit" rows="19" cols="50">
+{
+   "amount":"100.0",
+   "description":"ebooks",
+   "order_id":"10",
+   "method":"card",
+   "card":{
+      "card_number":"4111111111111111",
+      "holder_name":"Juan Perez Ramirez",
+      "expiration_year":"20",
+      "expiration_month":"12",
+      "cvv2":"110",
+      "address":{
+         "city":"Querétaro",
+         "line3":"Queretaro",
+         "postal_code":"76900",
+         "line1":"Av 5 de Febrero",
+         "line2":"Roble 207",
+         "state":"Queretaro",
+         "country_code":"MX"
+      }
+   }
+}
+	</textarea>
+		</div>
+		<div class="tableCell">
+			<p class="response">Request response:</p>
+			<textarea id="response" class="inputTextarea disableOnSubmit" rows="19" cols="50">
+	</textarea>
+		</div>
+	</div>
+	<div class="tableRow">
+		<input type="button" class="disableOnSubmit" id="makeRequest" value="Make Charge">
+	</div>
+	</fieldset>
+</div>
+
+
+<div class="table">
+<fieldset>
+  <legend>Make a Card:</legend>
+	<div class="tableRow">
+		<div class="tableCell">
+			<p>Customer ID:</p>
+			<input type="text" class="inputText disableOnSubmit" id="customerId" size="50" />
+		</div>
+	</div>
+	<div class="tableRow">
+		<div class="tableCell">
+			<p>Create Card Request data <span id="responseMode" />:</p>
+			<textarea id="dataCard" class="inputTextarea disableOnSubmit" rows="19" cols="50">
+{
+      "card_number":"4111111111111111",
+      "holder_name":"Juan Perez Ramirez",
+      "expiration_year":"20",
+      "expiration_month":"12",
+      "cvv2":"110",
+      "address":{
+         "city":"Querétaro",
+         "line3":"Queretaro",
+         "postal_code":"76900",
+         "line1":"Av 5 de Febrero",
+         "line2":"Roble 207",
+         "state":"Queretaro",
+         "country_code":"MX"
+      }
+}
+	</textarea>
+		</div>
+		<div class="tableCell">
+			<p class="response">Request response:</p>
+			<textarea id="responseCard" class="inputTextarea disableOnSubmit" rows="19" cols="50">
+	</textarea>
+		</div>
+	</div>
+	<div class="tableRow">
+		<input type="button" class="disableOnSubmit" id="makeRequestCard" value="Make Card">
+	</div>
+	</fieldset>
+</div>
+
+
+<div class="table">
+<fieldset>
+  <legend>Validate a card:</legend>
+	<div class="tableRow">
+		<div class="tableCell">
+			<p>Select Card Type:</p>
+			<select id="cardTypes" class="inputSelect disableOnSubmit">
+				<option value="5555555555554444">5555555555554444 [MASTERCARD]</option>
+				<option value="5105105105105100">5105105105105100 [MASTERCARD]</option>
+				<option value="4111111111111111">4111111111111111 [VISA]</option>
+				<option value="4012888888881881">4012888888881881 [VISA]</option>
+				<option value="4917300800000000">4917300800000000 [VISA ELECTRON]</option>
+				<option value="378282246310005">378282246310005 [AMEX]</option>
+				<option value="378734493671000">378734493671000 [AMEX CORPORATE]</option>
+				<option value="30569309025904">30569309025904 [DINERS]</option>
+				<option value="6011111111111117">6011111111111117[DISCOVER]</option>
+				<option value="3530111333300000">3530111333300000 [JCB]</option>
+				<option value="630490017740292441">630490017740292441 [LASER]</option>
+			</select>
+		</div>
+		<div class="tableCell">
+			<p>Type Card Number:</p>
+			<input type="text" id="cardNumber" class="inputText disableOnSubmit">
+		</div>
+	</div>
+	<div class="tableRow">
+		<div class="tableCell">
+			<p>Expiry Month / Year</p>
+			<select id="expiryMonth" class="inputSelect disableOnSubmit">
+				<option value="1" selected="selected">01</option>
+				<option value="2">02</option>
+				<option value="3">03</option>
+				<option value="4">04</option>
+				<option value="5">05</option>
+				<option value="6">06</option>
+				<option value="7">07</option>
+				<option value="8">08</option>
+				<option value="9">09</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+			</select>
+			<select id="expiryYear" class="inputSelect disableOnSubmit">
+				<option value="2012">2012</option>
+				<option value="2013">2013</option>
+				<option value="2014" selected="selected">2014</option>
+				<option value="2015">2015</option>
+				<option value="2016">2016</option>
+			</select>
+		</div>
+		<div class="tableCell">
+			<p>CVC:</p>
+			<input type="text" id="cvc" class="inputText disableOnSubmit">
+		</div>
+	</div>
+	<div class="tableRow">
+		<div class="tableCell">
+			<p>Validation:</p>
+			<label><input type="checkbox" id="valid" class="disableOnSubmit"> Is the card number valid?</label><br>
+			<label><input type="checkbox" id="accepted" class="disableOnSubmit"> Is the card number accepted?</label><br>
+			<label><input type="checkbox" id="cvcValid" class="disableOnSubmit"> Is the CVC valid?</label><br>
+			<label><input type="checkbox" id="cvcExpiry" class="disableOnSubmit"> Is the expiry date valid?</label><br>
+			<label><input type="checkbox" id="typeNumber" class="disableOnSubmit"> Which brand is the card number? <span id="typeName"></span></label><br>
+		</div>
+	</div>
+	<div class="tableRow">
+		<input type="button" class="disableOnSubmit" id="makeValidation" value="Validate">
+	</div>
+	</fieldset>
+</div>
+
+</body>
+</html>
