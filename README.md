@@ -1,6 +1,6 @@
 #Openpay.js
 ##Introduction
-###¿Qué es Openpay.js?
+###What is Openpay.js?
 Openpay.js is a Javascript library designed to facilitate the processing of credit card charges from a website directly invoking our services without invoking the origin server.
 
 ###Benefits:
