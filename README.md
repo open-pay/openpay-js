@@ -23,8 +23,8 @@ OpenPay.setApiKey('PUBLIC_API_KEY');
 ```
 |Notas:|
 |:------|
-|Tanto el MERCHANT-ID como el PUBLIC_API_KEY, los puedes obtener de la página de inicio de tu cuenta en el sitio de Openpay.|
-|Nunca debes utilizar tu llave privada con está librería, debido a que es visible del lado del cliente.|
+|* Tanto el MERCHANT-ID como el PUBLIC_API_KEY, los puedes obtener de la página de inicio de tu cuenta en el sitio de Openpay.|
+|* Nunca debes utilizar tu llave privada con está librería, debido a que es visible del lado del cliente.|
 ###Modo Sandbox
 Cuando se está realizando la implementacion es posible que se desee hacer pruebas antes de que se hagan cobros normales a una tarjeta de crédito, para ello es posible utilizar el método **OpenPay.setSandboxMode()** el cual nos ayudará a activar o desactivar el modo sandbox (prueba) en las peticiones que se hagan con OpenPay.js
 ```javascript
@@ -42,34 +42,70 @@ Para realizar un cargo es necesario hacer una llamada al método **OpenPay.card.
 ####Ejemplo de petición:
 ```javascript
 OpenPay.card.charge({
-	amount: 100.00,
-	description: 'COMPRA/VENTA',
-	order_id: 'A000001',
-	card: {
-		card_number: '5555555555554444',
-		cvv2: '123',
-		holder_name: 'Juan Pérez',
-		expiration_month: '01',
-		expiration_year: '14',
-		address: {
-			street: 'Av. Paseo de la Reforma',
-			exterior_number: '325',
-			interior_number: null,
-			city: 'Ciudad de México',
-			region: 'DF',
-			postal_code: '06500'
-		}
-	}
+   "amount":100.0,
+   "description":"ebooks",
+   "order_id":"10",
+   "method":"card",
+   "card":{
+      "card_number":"4111111111111111",
+      "holder_name":"Juan Perez Ramirez",
+      "expiration_year":"20",
+      "expiration_month":"12",
+      "cvv2":"110",
+      "address":{
+         "city":"Querétaro",
+         "line3":"Queretaro",
+         "postal_code":"76900",
+         "line1":"Av 5 de Febrero",
+         "line2":"Roble 207",
+         "state":"Queretaro",
+         "country_code":"MX"
+      }
+   }
 }, onSuccess, onError);
 ```
 El primer parámetro es un objeto Javascript que contiene la información del cargo, mientras que el segundo y tercer parámetros definen las funciones que se llamarán en caso de que la transacción haya sido correcta o haya fallado (respectivamente).
 La definición del objecto cargo la encontrarás [aquí](http://docs.openpay.mx/#cargos).
+
+###Creacion de tarjetas
+Para crear una tarjeta es necesario hacer una llamada al método **OpenPay.card.create()**:
+```javascript
+​​OpenPay.card.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
+```
+
+|Notas|
+|:----|
+|* Con este metodo podras crear tarjetas tanto a nivel de comercio como a nivel de tus clientes.|
+|* Para crear tarjetas a nivel de cliente, es necesario pasar el CLIENTE-ID por medio del siguiente metodo: **OpenPay.setCustomerId()**.|
+|* El CLIENTE-ID, se puede consultar en el dashboard en el listado clientes.|
+####Ejemplo de petición de creacion a nivel de comercio:
+```javascript
+OpenPay.card.create({
+      "card_number":"4111111111111111",
+      "holder_name":"Juan Perez Ramirez",
+      "expiration_year":"20",
+      "expiration_month":"12",
+      "cvv2":"110",
+      "address":{
+         "city":"Querétaro",
+         "line3":"Queretaro",
+         "postal_code":"76900",
+         "line1":"Av 5 de Febrero",
+         "line2":"Roble 207",
+         "state":"Queretaro",
+         "country_code":"MX"
+      }
+}, onSuccess, onError);
+```
+El primer parámetro es un objeto Javascript que contiene la información de la tarjeta, mientras que el segundo y tercer parámetros definen las funciones que se llamarán en caso de que la operacion haya sido correcta o haya fallado (respectivamente).
+La definición del objeto card la encontrarás [aquí](http://docs.openpay.mx/#tarjetas).
+
 ###Funciones de respuesta
 Las funciones de respuesta sirven como manejadores del resultado de la transacción. Son funciones simples de Javascript pero que reciben argumentos con un formato predeterminado.
 
 | Notas |
 | :------------- |
-|​Aunque las funciones de respuesta son opcionales, recomendamos que se implementen para que el resultado de la transacción pueda ser monitoreado en la página web. |
+|* Aunque las funciones de respuesta son opcionales, recomendamos que se implementen para que el resultado de la transacción pueda ser monitoreado en la página web. |
 ###SuccessCallback
 Esta función es llamada cuando la transacción fue exitosa de principio a fin. Recibe un solo parámetro que es un objeto Javascript con los datos de la [transacción](http://docs.openpay.mx/#api-referencia$objeto-transacción).
 Ejemplo completo de implementación de una función SuccessCallback:
