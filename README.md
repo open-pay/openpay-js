@@ -77,9 +77,29 @@ Para crear una tarjeta es necesario hacer una llamada al método **OpenPay.card.
 |:----|
 |* Con este metodo podras crear tarjetas tanto a nivel de comercio como a nivel de tus clientes.|
 |* Para crear tarjetas a nivel de cliente, es necesario pasar el CLIENTE-ID por medio del siguiente metodo: **OpenPay.setCustomerId()**.|
-|* El CLIENTE-ID, se puede consultar en el dashboard en el listado clientes.|
-####Ejemplo de petición de creacion a nivel de comercio:
+|* El CLIENTE-ID, se puede consultar en el dashboard dentro del listado clientes.|
+####Ejemplo de creación de tarjeta a nivel de comercio:
 ```javascript
+OpenPay.card.create({
+      "card_number":"4111111111111111",
+      "holder_name":"Juan Perez Ramirez",
+      "expiration_year":"20",
+      "expiration_month":"12",
+      "cvv2":"110",
+      "address":{
+         "city":"Querétaro",
+         "line3":"Queretaro",
+         "postal_code":"76900",
+         "line1":"Av 5 de Febrero",
+         "line2":"Roble 207",
+         "state":"Queretaro",
+         "country_code":"MX"
+      }
+}, onSuccess, onError);
+```
+####Ejemplo de creación de tarjeta a nivel de cliente:
+```javascript
+OpenPay.setCustomerId("aos2jvwpyyy4nhbodxbu");
 OpenPay.card.create({
       "card_number":"4111111111111111",
       "holder_name":"Juan Perez Ramirez",
