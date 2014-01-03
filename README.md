@@ -74,8 +74,7 @@ OpenPay.card.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
 |Notes|
 |:----|
 |* With this method you can create cards at both merchant and customers.|
-|* To create a customer cards, you need to pass the CUSTOMER-ID using the following method: **OpenPay.setCustomerId ()**.|
-|* The CLIENT-ID, refer to the dashboard from the list customers.|
+|* You can see the CLIENT-ID, into dashboard from the list customers.|
 ####Example of creating a merchant card:
 ```javascript
 OpenPay.card.create({
@@ -97,7 +96,6 @@ OpenPay.card.create({
 ```
 ####Example of creating customer card:
 ```javascript
-OpenPay.setCustomerId("aos2jvwpyyy4nhbodxbu");
 OpenPay.card.create({
       "card_number":"4111111111111111",
       "holder_name":"Juan Perez Ramirez",
@@ -113,7 +111,7 @@ OpenPay.card.create({
          "state":"Queretaro",
          "country_code":"MX"
       }
-}, onSuccess, onError);
+}, onSuccess, onError, "aos2jvwpyyy4nhbodxbu");
 ```
 The first parameter is a Javascript object containing information on the card, while the second and third parameters define the functions that will be called if the operation was successful or failed (respectively).
 The definition of object card find it [here](http://docs.openpay.mx/#tarjetas).

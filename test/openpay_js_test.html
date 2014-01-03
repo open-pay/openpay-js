@@ -74,11 +74,10 @@ $(document).ready(function(){
 			_data = JSON.parse(JSON.stringify(eval("(" + $('#dataCard').val() + ")")));
 			OpenPay.setId(_id);
 			OpenPay.setApiKey(_apiKey);
-			OpenPay.setCustomerId(_customerId);
-			OpenPay.card.create(_data, successCard, errorCard);
+			OpenPay.card.create(_data, successCard, errorCard, _customerId);
 		} catch (e) {
 			setDisableElements(true);
-			displayResults('Request failed (invalid data)', null);
+			displayResultsCard('Request failed (invalid data)', null);
 		}
 	};
 	
