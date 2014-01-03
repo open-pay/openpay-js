@@ -106,7 +106,7 @@ Las funciones de respuesta sirven como manejadores del resultado de la transacci
 | Notas |
 | :------------- |
 |* Aunque las funciones de respuesta son opcionales, recomendamos que se implementen para que el resultado de la transacción pueda ser monitoreado en la página web. |
-###SuccessCallback
+####SuccessCallback
 Esta función es llamada cuando la transacción fue exitosa de principio a fin. Recibe un solo parámetro que es un objeto Javascript con los datos de la [transacción](http://docs.openpay.mx/#api-referencia$objeto-transacción).
 Ejemplo completo de implementación de una función SuccessCallback:
 ```javascript
@@ -144,7 +144,7 @@ Ejemplo del objeto transacciòn:
    }
 }
 ```
-###ErrorCallback
+####ErrorCallback
 Esta función se ejecutará cada vez que una transacción haya fallado (por cualquier circunstancia, antes o después de enviar la petición). Al igual que el **SuccessCallback()**, recibe un solo parámetro que es un objeto Javascript con el detalle del fallo.
 
 Los campos que definen el objeto Javascript de respuesta se describen a continuación:
