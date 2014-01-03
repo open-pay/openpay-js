@@ -1,84 +1,82 @@
 #Openpay.js
-##Introducción
+##Introduction
 ###¿Qué es Openpay.js?
-Openpay.js es una librería Javascript diseñada para facilitar el procesamiento de cobros con tarjeta de crédito desde una página web sin la necesidad que la información de la transacción pase por el servidor origen.
+Openpay.js is a Javascript library designed to facilitate the processing of credit card charges from a website directly invoking our services without invoking the origin server.
 
-###Ventajas:
-* La información de la transacción no tiene que pasar por el servidor origen, sino que es enviada directamente a Openpay
-* Es la manera más sencilla y rápida para integrar un módulo de cobros en una página web.
+###Benefits:
+* The transaction information does not have to pass through the origin server, it is sent directly to Openpay.
+* It is the easiest and fastest way to integrate a charges module on a ecommerce website.
 
-##Implementación
-###Agregar la librería
-El primer paso para la integración consiste en agregrar la librería la página desde la que se realizarán los pagos. Agrega el siguiente código:  
+##Implementation
+###Add the library
+The first step in the integration is to add the library to the page from which payments will be made. Add the following code: 
 ```HTML
-​<script type="text/javascript" src="http://public.openpay.mx/openpay.v1.min.js"></script>
+<script type="text/javascript" src="http://public.openpay.mx/openpay.v1.min.js"></script>
 ```
-###Configuración
-Antes de poder utilizar Openpay.js es necesario que se configuren tanto el ID de comercio, como llave pública que fueron asignados a la cuenta. Con estos datos, Openay podrá identificar la cuenta a la que se harán  abonarán los cargos.
+###Configuration
+Before you can use Openpay.js is necessary to configure both the merchant id, and public key that were assigned when you created your account. With these data, Openpay can identify the account to which the charges are paid.
 
-La configuración de ambos datos se hace con los métodos **OpenPay.setId()** y **OpenPay.setApiKey()**, respectivamente:
+You can configure both fields with the following methods **OpenPay.setId()** y **OpenPay.setApiKey()**, respectively:
 ```javascript
 OpenPay.setId('MERCHANT_ID');
 OpenPay.setApiKey('PUBLIC_API_KEY');
 ```
-|Notas:|
+|Notes:|
 |:------|
-|* Tanto el MERCHANT-ID como el PUBLIC_API_KEY, los puedes obtener de la página de inicio de tu cuenta en el sitio de Openpay.|
-|* Nunca debes utilizar tu llave privada con está librería, debido a que es visible del lado del cliente.|
-###Modo Sandbox
-Cuando se está realizando la implementacion es posible que se desee hacer pruebas antes de que se hagan cobros normales a una tarjeta de crédito, para ello es posible utilizar el método **OpenPay.setSandboxMode()** el cual nos ayudará a activar o desactivar el modo sandbox (prueba) en las peticiones que se hagan con OpenPay.js
+|* Both MERCHANTID as PUBLIC_API_KEY, are obtained from the homepage of your account on the [Openpay](http://www.openpay.mx/) site.|
+|* You should never use your private key along with the library, because it is visible on the client side.|
+
+###Sandbox Mode
+While the implementation is done it is possible to test prior to actual charges on a real credit card, for which the method is used:**OpenPay.setSandboxMode()** which will help us to enable or disable the sandbox (test) mode requests that are made with OpenPay.js
 ```javascript
 OpenPay.setSandboxMode(FLAG);
 ```
-El método recibe como parámetro una bandera true/false para activar o desactivar el modo de pruebas. Si es necesario, se puede utilizar el método OpenPay.getSandboxMode() para determinar el estatus del modo Sandbox en cualquier momento:
+The method receives as a parameter a boolean flag (true / false) to turn test mode. If necessary, you can use the OpenPay.getSandboxMode () method to determine the status of the Sandbox Mode at any time:
 ```javascript
 OpenPay.getSandboxMode(); // TRUE/FALSE, dependiendo si el modo está activado o no.
 ```
-###Procesamiento de cargos
-Para realizar un cargo es necesario hacer una llamada al método **OpenPay.card.charge()**:
+###Processing Charges
+To make a card charge is necessary call the method **OpenPay.card.charge()**:
 ```javascript
-​​OpenPay.card.charge(CHARGE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
+OpenPay.card.charge(CHARGE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
 ```
-####Ejemplo de petición:
+####Example request:
 ```javascript
 OpenPay.card.charge({
-   "amount":100.0,
-   "description":"ebooks",
-   "order_id":"10",
-   "method":"card",
-   "card":{
-      "card_number":"4111111111111111",
-      "holder_name":"Juan Perez Ramirez",
-      "expiration_year":"20",
-      "expiration_month":"12",
-      "cvv2":"110",
-      "address":{
-         "city":"Querétaro",
-         "line3":"Queretaro",
-         "postal_code":"76900",
-         "line1":"Av 5 de Febrero",
-         "line2":"Roble 207",
-         "state":"Queretaro",
-         "country_code":"MX"
-      }
-   }
+    amount: 100.00,
+	description: 'COMPRA/VENTA',
+	order_id: 'A000001',
+	card: {
+		card_number: '5555555555554444',
+		cvv2: '123',
+		holder_name: 'Juan Pérez',
+		expiration_month: '01',
+		expiration_year: '14',
+		address: {
+			street: 'Av. Paseo de la Reforma',
+			exterior_number: '325',
+			interior_number: null,
+			city: 'Ciudad de México',
+			region: 'DF',
+			postal_code: '06500'
+		}
+	}
 }, onSuccess, onError);
 ```
-El primer parámetro es un objeto Javascript que contiene la información del cargo, mientras que el segundo y tercer parámetros definen las funciones que se llamarán en caso de que la transacción haya sido correcta o haya fallado (respectivamente).
-La definición del objecto cargo la encontrarás [aquí](http://docs.openpay.mx/#cargos).
-
-###Creacion de tarjetas
-Para crear una tarjeta es necesario hacer una llamada al método **OpenPay.card.create()**:
+The first parameter is a Javascript object containing information charge card, while the second and third parameters define the functions that will be called if the transaction was successful or failed (respectively).
+The definition of the object by the find [here](http://docs.openpay.mx/#cargos).
+###Creating cards
+To create a card you need to call the method **OpenPay.card.create()**:
 ```javascript
-​​OpenPay.card.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
+OpenPay.card.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
 ```
 
-|Notas|
+|Notes|
 |:----|
-|* Con este metodo podras crear tarjetas tanto a nivel de comercio como a nivel de tus clientes.|
-|* Para crear tarjetas a nivel de cliente, es necesario pasar el CLIENTE-ID por medio del siguiente metodo: **OpenPay.setCustomerId()**.|
-|* El CLIENTE-ID, se puede consultar en el dashboard dentro del listado clientes.|
-####Ejemplo de creación de tarjeta a nivel de comercio:
+|* With this method you can create cards at both merchant and customers.|
+|* To create a customer cards, you need to pass the CUSTOMER-ID using the following method: **OpenPay.setCustomerId ()**.|
+|* The CLIENT-ID, refer to the dashboard from the list customers.|
+####Example of creating a merchant card:
 ```javascript
 OpenPay.card.create({
       "card_number":"4111111111111111",
@@ -97,7 +95,7 @@ OpenPay.card.create({
       }
 }, onSuccess, onError);
 ```
-####Ejemplo de creación de tarjeta a nivel de cliente:
+####Example of creating customer card:
 ```javascript
 OpenPay.setCustomerId("aos2jvwpyyy4nhbodxbu");
 OpenPay.card.create({
@@ -117,18 +115,19 @@ OpenPay.card.create({
       }
 }, onSuccess, onError);
 ```
-El primer parámetro es un objeto Javascript que contiene la información de la tarjeta, mientras que el segundo y tercer parámetros definen las funciones que se llamarán en caso de que la operacion haya sido correcta o haya fallado (respectivamente).
-La definición del objeto card la encontrarás [aquí](http://docs.openpay.mx/#tarjetas).
+The first parameter is a Javascript object containing information on the card, while the second and third parameters define the functions that will be called if the operation was successful or failed (respectively).
+The definition of object card find it [here](http://docs.openpay.mx/#tarjetas).
 
-###Funciones de respuesta
-Las funciones de respuesta sirven como manejadores del resultado de la transacción. Son funciones simples de Javascript pero que reciben argumentos con un formato predeterminado.
+###Response functions
+The response functions serve as handles of the result of the transaction. These, are simple Javascript functions but receive input parameters with a predetermined format.
 
-| Notas |
+| Notes |
 | :------------- |
-|* Aunque las funciones de respuesta son opcionales, recomendamos que se implementen para que el resultado de la transacción pueda ser monitoreado en la página web. |
-####SuccessCallback
-Esta función es llamada cuando la transacción fue exitosa de principio a fin. Recibe un solo parámetro que es un objeto Javascript con los datos de la [transacción](http://docs.openpay.mx/#api-referencia$objeto-transacción).
-Ejemplo completo de implementación de una función SuccessCallback:
+|* Although the response functions are optional, we recommend to implement the outcome of the transaction can be monitored on the website.|
+
+###SuccessCallback
+This function is called when the transaction is successful from start to finish. Get a single parameter which is a Javascript object with the data from [transaction](http://docs.openpay.mx/#api-referencia$objeto-transacción).
+Complete example of implementing a function SuccessCallback:
 ```javascript
 function SuccessCallback(response) {
 	alert('Transacción exitosa');
@@ -139,7 +138,7 @@ function SuccessCallback(response) {
 	results.innerHTML = content;
 }
 ```
-Ejemplo del objeto transacciòn:
+Example of the transaction object:
 ```json
 {
    "id":"trehwr2zarltvae56vxl",
@@ -164,20 +163,18 @@ Ejemplo del objeto transacciòn:
    }
 }
 ```
-####ErrorCallback
-Esta función se ejecutará cada vez que una transacción haya fallado (por cualquier circunstancia, antes o después de enviar la petición). Al igual que el **SuccessCallback()**, recibe un solo parámetro que es un objeto Javascript con el detalle del fallo.
+###ErrorCallback
+This function will be executed each time a transaction has failed (for any reason, before or after sending the request). Like the method **SuccessCallback()**, takes a single parameter which is a Javascript object with detailed fault.
 
-Los campos que definen el objeto Javascript de respuesta se describen a continuación:
+The response object fields are described below:
 
-Los campos del objeto de respuesta se describen a continuación:
-
-|Campo|Formato|Descripciòn|
+|Field|Format|Description|
 | -------- | --------- | --------- |
-|status|Integer|Describe el status HTTP de la transacción. En caso de que se produzca un error antes de enviar la petición, el status será igual a cero.|
-|message|String|Descripción corta del error que ha ocurrido. Puede ser uno de los siguientes valores: "Unknown error", "Request error", "Response error (Unknown final status)", "Empty or invalid OpenPay ID", "Empty or invalid API Key", "Browser error", "Timeout after X milliseconds".|
-|data|Objeto|Contiene un [Objeto Error](http://docs.openpay.mx/#errores) con la información del error en la transacción proporcionada por el servidor de OpenPay.|
+|status|Integer|Describe the HTTP status of the transaction. If an error before sending the request occurs, the status will be zero.|
+|message|String|Short description of the error that occurred. It can be one of the following values​​: "Unknown error", "Request error", "Response error (end Unknown status)", "Empty or invalid OpenPay ID", "Empty or invalid API Key", "Browser error", "timeout after X milliseconds ".|
+|data|Objeto|Contains an [Object Error] (http://docs.openpay.mx/ # errors) with the error information in the transaction provided by the server OpenPay.|
 
-Ejemplo completo de implementación de una función ErrorCallback:
+Complete example of implementing a function ErrorCallback:
 ```javascript
 function ErrorCallback(response) {
 	alert('Fallo en la transacción');
@@ -189,7 +186,7 @@ function ErrorCallback(response) {
 	results.innerHTML = content;
 }
 ```
-Ejemplo de mensaje ErrorCallBack:
+Example ErrorCallBack message:
 ```json
 {
    "status":409,
@@ -203,64 +200,65 @@ Ejemplo de mensaje ErrorCallBack:
    }
 }
 ```
-###Tipos de error en la petición
-Además del campo status que guarda el estado de la transacción, es posible determinar el error que haya  sucedido por medio del campo message. El mensaje puede ser uno de los siguientes:
+###Types error responses
+In addition to the status field that saves the state of the transaction, it is possible to determine the error that happened through the message field. The message may be one of the following:
 
-* **"Empty or invalid OpenPay ID"**:  Sucede cuando no se ha configurado correctamente el ID de usuario con el método OpenPay.setId() 
-* **"Empty or invalid API Key"**:  Al igual que el error anterior, sucede cuando no se ha configurado el API Key con el método OpenPay.setApiKey()
-* **"Browser error"**: Es disparado cuando hay un error en el navegador que impide que la petición se realice correctamente. Puede provocarse por caracterísiticas que son necesarias para ejecutar cierto código y que están faltantes en el navegador. Para mayor información consulta la sección "Compatibilidad y requerimientos". 
-* **"Request error"**: Este error indica que hubo un error en el servidor de Openpay. Puede deberse a parámetros faltantes, formatos u algún otro problema que impide realizar correctamente la transacción.  
-* **"Response error (Unknown final status)"**: Cuando se genera este error, quiere decir que la petición de transacción fue enviada correctamente al servidor de Openpay pero no se recibió ninguna respuesta. Es posible que esto se deba a un problema en Openpay. Para mayor información contacta a OpenPay.
-* **"Timeout after X milliseconds"**: Se lanza cuando la petición ha tardado mucho tiempo en ejecutarse y, por tanto, expira el tiempo de respuesta.
-* **"Unknown error"**: Se genera cuando existe algún error desconocido que impide que la petición se realice. Puede ser por problemas en el navegador o de conectividad.
+* **"Empty or invalid OpenPay ID"**: It happens when you have not properly configured the user ID with the OpenPay.setId () method 
+* **"Empty or invalid API Key"**: Like the above error happens when you have not configured your API Key with OpenPay.setApiKey () method
+* **"Browser error"**: It is triggered when there is an error in the browser that prevents the request to succeed. It may be caused by caracterísiticas that are necessary to run some code and are missing in the browser. For more information see the "Compatibility and Requirements" section.
+* **"Request error"**: This error indicates that an error occurred in the server Openpay. May be due to missing parameters, formats, or some other problem that prevents a successful transaction.
+* **"Response error (Unknown final status)"**: When this error occurs, it means that the transaction request was submitted successfully to Openpay server but no response was received. This may be due to a problem in Openpay. For more information contact OpenPay.
+* **"Timeout after X milliseconds"**: Thrown when the request has taken a long time to run and therefore the response time expires.
+* **"Unknown error"**: Raised when there is an unknown error that prevents the request is made. It may be due to problems in the browser or connectivity.
 
-##Funciones de validación de número de tarjeta
-Además de las funciones para procesar cargos por tarjeta, Openpay.js también incluye algunas funciones para validad los principales datos que son necesarios para llevar a cabo la transacción, sobre todo los referentes a los números de tarjeta. 
+##Card Validation Functions
+Besides the functions to process card charges, Openpay.js also includes some functions to validate key data necessary to carry out the transaction, especially regarding card numbers.
 
-Los métodos disponibles son:
+Available methods are:
 
 * `OpenPay.card.validateCardNumber()`
 * `OpenPay.card.validateCVC()`
 * `OpenPay.card.validateExpiry()`
 * `OpenPay.card.cardType()`
 
-###Validación de número de tarjeta
-Para realizar la validación de un número de tarjeta es posible utilizar el método **OpenPay.card.validateCardNumber()**.
+###Number card validation
+To validate a card number can use the method **OpenPay.card.validateCardNumber()**.
 
-Este método recibe como parámetro un String con el número de tarjeta que se validará y regresar un true/false en caso de que se trate de un número de tarjeta válido y sea aceptado por Openpay. Ejemplo:
+This method receives as parameter a String with the card number to be validated and return one true / false if it is a valid card number and is accepted by Openpay. 
+Example:
 ```javascript
 OpenPay.card.validateCardNumber('5555555555554444);
 ```
-Este método es muy útil para determinar si un número de tarjeta es válido y si es candidato para utilizarse con Openpay, por eso recomendamos que se use sistemáticamente antes de intentar un cobro con tarjeta.
+This method is very useful for determining whether a card number is valid and if a candidate for use with Openpay, so we recommend that you use before attempting a charge card.
 
-Ejemplos:
+Examples:
 ```javascript
-OpenPay.card.validateCardNumber('5555555555554444'); // TRUE. Número de tarjeta válido y aceptado por OpenPay (MASTERCARD)
+OpenPay.card.validateCardNumber('5555555555554444'); // TRUE. Valid card number and accepted by OpenPay (MASTERCARD)
 
-OpenPay.card.validateCardNumber('378282246310005'); // FALSE. Número de tarjeta válido pero no aceptado por OpenPay (AMEX)
+OpenPay.card.validateCardNumber('378282246310005'); // FALSE. Number of valid card but not accepted by OpenPay (AMEX)
 ```
-###Validación de Código de Seguridad
-Para validar un código de seguridad se utiliza el método **OpenPay.card.validateCVC()**.
+###Security Code Validation
+To validate a security code is used the method **OpenPay.card.validateCVC()**.
 
-Este método recibe como parámetro un String y devuelve true/false en caso de que la cadena sea válida. Ejemplo:
+This method takes a String as a parameter and returns true / false if the string is valid. Example:
 ```javascript
 OpenPay.card.validateCVC('123'); // válido
 OpenPay.card.validateCVC('1234'); // válido
 OpenPay.card.validateCVC('A23'); // inválido
 ```
-###Validación de fecha de expiración
-Para este propósito se utiliza el método **OpenPay.card.validateExpiry()**.
+###Expiration date validation
+For this purpose is used the method **OpenPay.card.validateExpiry()**.
 
-Recibe como parámetros dos Strings que representan el mes y año de expiración de la tarjeta. Devuelve true/false cuando la combinación de ambos datos, mes y año, determinan una fecha de expiración válida. Ejemplo:
+Receive two strings as parameters to represent the month and year of expiry of the card. Returns true / false if the combination of both data, month and year, determine a valid expiration date. Example:
 ```javascript
 OpenPay.card.validateExpiry('01', '2013'); // inválido
 OpenPay.card.validateExpiry('05', '2015'); // válido
 ```
 
-Tipo de tarjeta
-Es posible determinar (en la mayoría de las veces,) el tipo de tarjeta al que pertenece un número de tarjeta. Para eso, se utiliza el método **OpenPay.card.cardType()**.
+###Card Type
+ECan be determined (most of the time) the type of card that a card number belongs. For this, is used the method **OpenPay.card.cardType()**.
 
-El método recibe como parámetro un número de tarjeta y devuelve un String con el nombre del tipo de tarjeta. Ejemplos:
+The method receives as a parameter a card number and returns a String with the name of the card type. Examples:
 ```javascript
 OpenPay.card.cardType('5555555555554444'); // Mastercard
 ​OpenPay.card.cardType('4111111111111111'); //​ Visa
@@ -270,8 +268,8 @@ OpenPay.card.cardType('30569309025904'); // Diners Club Carte Blanche
 OpenPay.card.cardType('6011111111111117'); // Discover
 OpenPay.card.cardType('3530111333300000'); // JCB
 ```
-##Compatibilidad y requerimientos
-Para utilizar Openpay.js es necesario contar con uno de los siguientes navegadores:
+##Compatibility and requirements
+To use Openpay.js You must have one of the following browsers:
 
 * Chrome 29.0+
 * Firefox 23.0+
@@ -282,4 +280,4 @@ Para utilizar Openpay.js es necesario contar con uno de los siguientes navegador
 * Blackberry Browser 7.0+
 * IE Mobile 10.0
 
-Los navegadores deben de contar con soporte para las librerías XMLHttpRequest y JSON Parser.
+Browsers must have support for XMLHttpRequest and JSON Parser libraries.
