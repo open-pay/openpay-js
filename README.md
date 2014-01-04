@@ -68,13 +68,13 @@ The definition of the object by the find [here](http://docs.openpay.mx/#cargos).
 ###Creating cards
 To create a card you need to call the method **OpenPay.card.create()**:
 ```javascript
-OpenPay.card.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
+OpenPay.card.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CUSTOMER-ID});
 ```
 
 |Notes|
 |:----|
-|* With this method you can create cards at both merchant and customers.|
-|* You can see the CLIENT-ID, into dashboard from the list customers.|
+|* With this method you can create cards at both merchant and customers.depending on if you include the **CUSTOMER-ID** in the call or not. The **CUSTOMER-ID** parameter is optional.|
+|* You can see the **CUSTOMER-ID**, into dashboard from the list customers.|
 ####Example of creating a merchant card:
 ```javascript
 OpenPay.card.create({
