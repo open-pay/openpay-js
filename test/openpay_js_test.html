@@ -9,41 +9,6 @@ $(document).ready(function(){
 	function setDisableElements(_status){
 		$('.disableOnSubmit').attr('disabled', _status);
 	};
-	function displayResults(_message, _response, _sandboxMode) {
-		setDisableElements(false);
-		$('#response').text(_message + (_response !== null ? ' ' + JSON.stringify(_response) : ''));
-	};
-	function success(_responseData) {
-		displayResults('Request proceessed successfully: ', _responseData);
-	};
-	function error(_errorResponseData){
-		displayResults('An error has been ocurred: ', _errorResponseData);
-	};
-	function call() {
-		var _id = '', _apiKey = '', _data = null;
-
-		setDisableElements(true);
-		$('#response').text('');
-
-		OpenPay.setSandboxMode( ($('#mode').val() == 'true' ? true : false) );
-		$('#responseMode').text( '(' + (OpenPay.getSandboxMode() ? 'sandbox' : 'production') + ' mode)' );
-
-		_id = $('#id').val();
-		_apiKey = $('#apiKey').val();
-		try {
-			_data = JSON.parse(JSON.stringify(eval("(" + $('#data').val() + ")")));
-			OpenPay.setId(_id);
-			OpenPay.setApiKey(_apiKey);
-			OpenPay.card.charge(_data, success, error);
-		} catch (e) {
-			setDisableElements(true);
-			displayResults('Request failed (invalid data)', null);
-		}
-	};
-	
-	$('#makeRequest').click(function(e){
-		call();
-	});
 	
 	function displayResultsCard(_message, _response, _sandboxMode) {
 		setDisableElements(false);
@@ -201,49 +166,6 @@ label {
 		</div>
 	</div>
 </div>
-<div class="table">
-	<fieldset>
-  <legend>Make a Charge:</legend>
-	<div class="tableRow">
-		<div class="tableCell">
-			<p>Charge Request data <span id="responseMode" />:</p>
-			<textarea id="data" class="inputTextarea disableOnSubmit" rows="19" cols="50">
-{
-   "amount":"100.0",
-   "description":"ebooks",
-   "order_id":"10",
-   "method":"card",
-   "card":{
-      "card_number":"4111111111111111",
-      "holder_name":"Juan Perez Ramirez",
-      "expiration_year":"20",
-      "expiration_month":"12",
-      "cvv2":"110",
-      "address":{
-         "city":"Querétaro",
-         "line3":"Queretaro",
-         "postal_code":"76900",
-         "line1":"Av 5 de Febrero",
-         "line2":"Roble 207",
-         "state":"Queretaro",
-         "country_code":"MX"
-      }
-   }
-}
-	</textarea>
-		</div>
-		<div class="tableCell">
-			<p class="response">Request response:</p>
-			<textarea id="response" class="inputTextarea disableOnSubmit" rows="19" cols="50">
-	</textarea>
-		</div>
-	</div>
-	<div class="tableRow">
-		<input type="button" class="disableOnSubmit" id="makeRequest" value="Make Charge">
-	</div>
-	</fieldset>
-</div>
-
 
 <div class="table">
 <fieldset>
