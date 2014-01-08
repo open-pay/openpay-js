@@ -35,36 +35,7 @@ The method receives as a parameter a boolean flag (true / false) to turn test mo
 ```javascript
 OpenPay.getSandboxMode(); // TRUE/FALSE, dependiendo si el modo está activado o no.
 ```
-###Processing Charges
-To make a card charge is necessary call the method **OpenPay.card.charge()**:
-```javascript
-OpenPay.card.charge(CHARGE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
-```
-####Example request:
-```javascript
-OpenPay.card.charge({
-    amount: 100.00,
-	description: 'COMPRA/VENTA',
-	order_id: 'A000001',
-	card: {
-		card_number: '5555555555554444',
-		cvv2: '123',
-		holder_name: 'Juan Pérez',
-		expiration_month: '01',
-		expiration_year: '14',
-		address: {
-			street: 'Av. Paseo de la Reforma',
-			exterior_number: '325',
-			interior_number: null,
-			city: 'Ciudad de México',
-			region: 'DF',
-			postal_code: '06500'
-		}
-	}
-}, onSuccess, onError);
-```
-The first parameter is a Javascript object containing information charge card, while the second and third parameters define the functions that will be called if the transaction was successful or failed (respectively).
-The definition of the object by the find [here](http://docs.openpay.mx/#cargos).
+
 ###Creating cards
 To create a card you need to call the method **OpenPay.card.create()**:
 ```javascript
@@ -124,7 +95,7 @@ The response functions serve as handles of the result of the transaction. These,
 |* Although the response functions are optional, we recommend to implement the outcome of the transaction can be monitored on the website.|
 
 ###SuccessCallback
-This function is called when the transaction is successful from start to finish. Get a single parameter which is a Javascript object with the data from [transaction](http://docs.openpay.mx/#api-referencia$objeto-transacción).
+This function is called when the transaction is successful from start to finish. Get a single parameter which is a Javascript object with the data from [card](http://docs.openpay.mx/#tarjetas).
 Complete example of implementing a function SuccessCallback:
 ```javascript
 function SuccessCallback(response) {
@@ -136,29 +107,31 @@ function SuccessCallback(response) {
 	results.innerHTML = content;
 }
 ```
-Example of the transaction object:
+Example of the card object:
 ```json
 {
-   "id":"trehwr2zarltvae56vxl",
-   "authorization":null,
-   "transaction_type":"payout",
-   "operation_type":"out",
-   "method":"bank",
-   "creation_date":"2013-11-14T18:29:35-06:00",
-   "order_id":"000001",
-   "status":"in_progress",
-   "amount":500,
-   "description":"Pago de ganancias",
-   "error_message":null,
-   "customer_id":"afk4csrazjp1udezj1po",
-   "bank_account":{
-      "alias":null,
-      "bank_name":"BANCOMER",
-      "creation_date":"2013-11-14T18:29:34-06:00",
-      "clabe":"012298026516924616",
-      "holder_name":"Juan Tapia Trejo",
-      "bank_code":"012"
-   }
+   "type":"debit",
+   "brand":"mastercard",
+   "address":{
+      "line1":"Av 5 de Febrero",
+      "line2":"Roble 207",
+      "line3":"Queretaro",
+      "state":"Queretaro",
+      "city":"Querétaro",
+      "postal_code":"76900",
+      "country_code":"MX"
+   },
+   "id":"kzd7vh8hp99k2h46gdu0",
+   "card_number":"1881",
+   "holder_name":"Juan Perez Ramirez",
+   "expiration_year":"20",
+   "expiration_month":"12",
+   "allows_charges":true,
+   "allows_payouts":false,
+   "creation_date":"2014-01-07T19:14:03-06:00",
+   "bank_name":"DESCONOCIDO",
+   "bank_code":"000",
+   "customer_id":null
 }
 ```
 ###ErrorCallback

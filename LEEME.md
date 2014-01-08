@@ -34,38 +34,6 @@ El método recibe como parámetro una bandera true/false para activar o desactiv
 ```javascript
 OpenPay.getSandboxMode(); // TRUE/FALSE, dependiendo si el modo está activado o no.
 ```
-###Procesamiento de cargos
-Para realizar un cargo es necesario hacer una llamada al método **OpenPay.card.charge()**:
-```javascript
-​​OpenPay.card.charge(CHARGE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
-```
-####Ejemplo de petición:
-```javascript
-OpenPay.card.charge({
-   "amount":100.0,
-   "description":"ebooks",
-   "order_id":"10",
-   "method":"card",
-   "card":{
-      "card_number":"4111111111111111",
-      "holder_name":"Juan Perez Ramirez",
-      "expiration_year":"20",
-      "expiration_month":"12",
-      "cvv2":"110",
-      "address":{
-         "city":"Querétaro",
-         "line3":"Queretaro",
-         "postal_code":"76900",
-         "line1":"Av 5 de Febrero",
-         "line2":"Roble 207",
-         "state":"Queretaro",
-         "country_code":"MX"
-      }
-   }
-}, onSuccess, onError);
-```
-El primer parámetro es un objeto Javascript que contiene la información del cargo, mientras que el segundo y tercer parámetros definen las funciones que se llamarán en caso de que la transacción haya sido correcta o haya fallado (respectivamente).
-La definición del objecto cargo la encontrarás [aquí](http://docs.openpay.mx/#cargos).
 
 ###Creacion de tarjetas
 Para crear una tarjeta es necesario hacer una llamada al método **OpenPay.card.create()**:
@@ -125,7 +93,7 @@ Las funciones de respuesta sirven como manejadores del resultado de la transacci
 | :------------- |
 |* Aunque las funciones de respuesta son opcionales, recomendamos que se implementen para que el resultado de la transacción pueda ser monitoreado en la página web. |
 ####SuccessCallback
-Esta función es llamada cuando la transacción fue exitosa de principio a fin. Recibe un solo parámetro que es un objeto Javascript con los datos de la [transacción](http://docs.openpay.mx/#api-referencia$objeto-transacción).
+Esta función es llamada cuando la transacción fue exitosa de principio a fin. Recibe un solo parámetro que es un objeto Javascript con los datos de la [tarjeta](http://docs.openpay.mx/#tarjetas).
 Ejemplo completo de implementación de una función SuccessCallback:
 ```javascript
 function SuccessCallback(response) {
@@ -137,29 +105,31 @@ function SuccessCallback(response) {
 	results.innerHTML = content;
 }
 ```
-Ejemplo del objeto transacciòn:
+Ejemplo del objeto tarjeta:
 ```json
 {
-   "id":"trehwr2zarltvae56vxl",
-   "authorization":null,
-   "transaction_type":"payout",
-   "operation_type":"out",
-   "method":"bank",
-   "creation_date":"2013-11-14T18:29:35-06:00",
-   "order_id":"000001",
-   "status":"in_progress",
-   "amount":500,
-   "description":"Pago de ganancias",
-   "error_message":null,
-   "customer_id":"afk4csrazjp1udezj1po",
-   "bank_account":{
-      "alias":null,
-      "bank_name":"BANCOMER",
-      "creation_date":"2013-11-14T18:29:34-06:00",
-      "clabe":"012298026516924616",
-      "holder_name":"Juan Tapia Trejo",
-      "bank_code":"012"
-   }
+   "type":"debit",
+   "brand":"mastercard",
+   "address":{
+      "line1":"Av 5 de Febrero",
+      "line2":"Roble 207",
+      "line3":"Queretaro",
+      "state":"Queretaro",
+      "city":"Querétaro",
+      "postal_code":"76900",
+      "country_code":"MX"
+   },
+   "id":"kzd7vh8hp99k2h46gdu0",
+   "card_number":"1881",
+   "holder_name":"Juan Perez Ramirez",
+   "expiration_year":"20",
+   "expiration_month":"12",
+   "allows_charges":true,
+   "allows_payouts":false,
+   "creation_date":"2014-01-07T19:14:03-06:00",
+   "bank_name":"DESCONOCIDO",
+   "bank_code":"000",
+   "customer_id":null
 }
 ```
 ####ErrorCallback
