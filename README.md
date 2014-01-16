@@ -16,7 +16,7 @@ The first step in the integration is to add the library to the page from which p
 ###Configuration
 Before you can use Openpay.js is necessary to configure both the merchant id, and public key that were assigned when you created your account. With these data, Openpay can identify the account to which the charges are paid.
 
-You can configure both fields with the following methods **OpenPay.setId()** y **OpenPay.setApiKey()**, respectively:
+You can configure both fields with the following methods **OpenPay.setId()** and  **OpenPay.setApiKey()**, respectively:
 ```javascript
 OpenPay.setId('MERCHANT_ID');
 OpenPay.setApiKey('PUBLIC_API_KEY');
@@ -95,15 +95,14 @@ The response functions serve as handles of the result of the transaction. These,
 |* Although the response functions are optional, we recommend to implement the outcome of the transaction can be monitored on the website.|
 
 ###SuccessCallback
-This function is called when the transaction is successful from start to finish. Get a single parameter which is a Javascript object with the data from [card](http://docs.openpay.mx/#tarjetas).
+This function is called when the transaction is successful from start to finish. It receives a single parameter which is a Javascript object with a data property representing a [card](http://docs.openpay.mx/#tarjetas) object.
 Complete example of implementing a function SuccessCallback:
 ```javascript
 function SuccessCallback(response) {
 	alert('Transacción exitosa');
 	var content = '', results = document.getElementById('resultDetail');
-	content .= 'Autorización: ' + response.data.authorization + '<br />';
-	content .= 'Descripción: ' + response.data.description + '<br />';
-	content .= 'Tipo de tarjeta usada: ' + response.data.card.brand + '<br />';
+	content .= 'Número de tarjeta: ' + response.data.card_number + '<br />';
+	content .= 'Tipo de tarjeta: ' + response.data.brand + '<br />';
 	results.innerHTML = content;
 }
 ```
@@ -200,7 +199,7 @@ Example:
 ```javascript
 OpenPay.card.validateCardNumber('5555555555554444);
 ```
-This method is very useful for determining whether a card number is valid and if a candidate for use with Openpay, so we recommend that you use before attempting a charge card.
+This method is very useful for determining whether a card number is a valid candidate for use with Openpay, so we recommend that you use it before attempting to charge a card.
 
 Examples:
 ```javascript
@@ -227,7 +226,7 @@ OpenPay.card.validateExpiry('05', '2015'); // válido
 ```
 
 ###Card Type
-ECan be determined (most of the time) the type of card that a card number belongs. For this, is used the method **OpenPay.card.cardType()**.
+The type of card that a card number belongs to can be determined most of the time. For this, use the method **OpenPay.card.cardType()**.
 
 The method receives as a parameter a card number and returns a String with the name of the card type. Examples:
 ```javascript
