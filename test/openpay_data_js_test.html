@@ -62,8 +62,9 @@ $(document).ready(function(){
 	OpenPay.setSandboxMode(true);
 
 	// Setup Form after calling setSandboxMode
-	OpenPay.deviceData.setupForm("openpayForm");
-	$('#deviceId').text(OpenPay.deviceData.getDeviceDataId());
+	var deviceDataId = OpenPay.deviceData.setup("openpayForm", "deviceIdField");
+	
+	$('#deviceId').text(deviceDataId);
 });
 
 </script>
