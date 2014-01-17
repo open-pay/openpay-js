@@ -240,23 +240,24 @@ OpenPay.card.cardType('3530111333300000'); // JCB
 ```
 
 ##Fraud detection using device data
-OpenPay can use the device information of a transaction in order to better detect fraudulent transactions. To do that, it's necessary to collect the customer's device information. 
+OpenPay can use the device information of a transaction in order to better detect fraudulent transactions.
 To do this, add the following code to your checkout page, when collecting payment information:
 ```HTML
 <script type="text/javascript" src="http://public.openpay.mx/openpay-data.v1.min.js"></script>
 ```
 
-Then, in your javascript, call the following function to generate a Device Data:
+Then, in your javascript, call OpenPay.deviceData.setup() to generate a Device Data.
 
 ```javascript
-// If you are testing your application, don't forget to set the Sandbox Mode before getting the device data ID.
+// If you are testing your application, set Sandbox Mode first
 // OpenPay.setSandboxMode(true);
 var deviceDataId = OpenPay.deviceData.setup("formId");
 ```
 
-This will generate a new Device Data ID and return it. If a formId was passed, the call will add a hidden input field to the form with the generated value. The name and id of the field can be specified in a second parameter, if ommited they will default to "deviceDataId".
-
-This generated deviceDataId needs to be stored during checkout, and sent to OpenPay when processing the charge.
+This method generates an identifier for the customer's device data. This value needs to be stored during checkout, and sent to OpenPay when processing the charge.
+The method takes two optional parameters: 
+The first is an existing form's id. If given, a new hidden input field will be added to it, with the value of the generated deviceDataId. 
+The second parameter specifies the generated field's name and id. If ommited, they will default to "deviceDataId".
 
 ##Compatibility and requirements
 To use Openpay.js You must have one of the following browsers:
