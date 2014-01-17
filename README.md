@@ -255,8 +255,11 @@ var deviceDataId = OpenPay.deviceData.setup("formId");
 ```
 
 This method generates an identifier for the customer's device data. This value needs to be stored during checkout, and sent to OpenPay when processing the charge.
+
 The method takes two optional parameters: 
+
 The first is an existing form's id. If given, a new hidden input field will be added to it, with the value of the generated deviceDataId. 
+
 The second parameter specifies the generated field's name and id. If ommited, they will default to "deviceDataId".
 
 ##Compatibility and requirements
