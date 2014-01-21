@@ -87,6 +87,45 @@ OpenPay.card.create({
 The first parameter is a Javascript object containing information on the card, while the second and third parameters define the functions that will be called if the operation was successful or failed (respectively).
 The definition of object card find it [here](http://docs.openpay.mx/#tarjetas).
 
+###Creating cards from html form
+The library Openpay.js gives you the **OpenPay.card.extractFormInfo()** method that draws the card information directly from some form:
+```javascript
+OpenPay.card.extractFormInfo(CREATE_FORM_OBJECT);
+```
+|Notes|
+|:----|
+|The extractFormInfo method receives as a parameter the form object, and based on that creates and returns a JSON object with the card information. This function does not send the information obtained only form values ​​and converts it to JSON format.|
+
+Furthermore the **OpenPay.card.extractFormAndCreate()** method is provided  which precesses the object form and upload the information:
+```javascript
+OpenPay.card.extractFormAndCreate(CREATE_FORM_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CLIENTE-ID});
+```
+|Notes|
+|:----|
+|This function is identical to the create method, with the difference that receives as a parameter the form object. This function sent the information, get form data, converts it to JSON format and send the information to openpay's servers.|
+
+Finally, on the form, all you have to do is add data-attributes **data-openpay-card** and **data-card-data-openpay-address** on inputs where card information is captured and address respectively, as shown then:
+
+```html
+<form id="processCard" name="processCard">
+    <p>Holder Name:</p><input data-openpay-card="holder_name" size="50" type="text">
+    <p>Card number:</p><input data-openpay-card="card_number" size="50" type="text">
+    <p>Expiration year:</p><input data-openpay-card="expiration_year" size="4" type="text">
+    <p>Expiration month:</p><input data-openpay-card="expiration_month" size="4" type="text">
+    <p>cvv2:</p><input data-openpay-card="cvv2" size="5" type="text">
+    <p>Street:</p><input data-openpay-card-address="line1" size="20" type="text">
+    <p>Number:</p><input data-openpay-card-address="line2" size="20" type="text">
+    <p>References:</p><input data-openpay-card-address="line3" size="20" type="text">
+    <p>Postal code:</p><input data-openpay-card-address="postal_code" size="6" type="text">
+    <p>City:</p><input data-openpay-card-address="city" size="20" type="text">
+    <p>State:</p><input data-openpay-card-address="state" size="20" type="text">
+    <p>Country code:</p><input data-openpay-card-address="country_code" size="3" type="text"> 
+    <input id="makeRequestCard" type="button" value="Make Card">
+</form>
+```
+
+For a complete example, download the test from the github site:[openpay.js](https://github.com/open-pay/openpay-js)
+
 ###Response functions
 The response functions serve as handles of the result of the transaction. These, are simple Javascript functions but receive input parameters with a predetermined format.
 
