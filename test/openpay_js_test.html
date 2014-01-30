@@ -33,7 +33,7 @@ $(document).ready(function(){
         }
     }
     
-	function callCard() {
+	function callCreateCard() {
 		var _id = '', _apiKey = '', _data = null, _customerId = '', _dataCard = '';
 		
 		setDisableElements(true);
@@ -43,19 +43,24 @@ $(document).ready(function(){
 		_id = $('#id').val();
 		_apiKey = $('#apiKey').val();
 		_customerId = $('#customerId').val();
-        _dataCard = OpenPay.card.extractFormInfo($('#processCard'));
+        _dataCard = OpenPay.extractFormInfo($('#processCard'));
 		$('#dataCard').text(JSON.stringify(_dataCard));
 		try {
 			OpenPay.setId(_id);
 			OpenPay.setApiKey(_apiKey);
-			OpenPay.card.create(_dataCard, successCard, errorCard, _customerId);
+			if($('#objectToCreate').val() == 'true'){
+				OpenPay.card.create(_dataCard, successCard, errorCard, _customerId);
+			} else {
+				OpenPay.token.create(_dataCard, successCard, errorCard);
+			}
+			
 		} catch (e) {
 			setDisableElements(true);
 			displayResultsCard('Request failed (invalid data)', null);
 		}
 	};
-	
-	function callDirectCard() {
+	//Envio directo
+	function callDirectCreateCard() {
 		var _id = '', _apiKey = '', _data = null, _customerId = '', _dataCard = '';
 		
 		setDisableElements(true);
@@ -68,8 +73,12 @@ $(document).ready(function(){
 		try {
 			OpenPay.setId(_id);
 			OpenPay.setApiKey(_apiKey);
-			//Envio directo
-			OpenPay.card.extractFormAndCreate($('#processCard'), successCard, errorCard, _customerId);
+			if($('#objectToCreate').val() == 'true'){
+				OpenPay.card.extractFormAndCreate($('#processCard'), successCard, errorCard, _customerId);
+			} else {
+				OpenPay.token.extractFormAndCreate($('#processCard'), successCard, errorCard);
+			}
+			
 		} catch (e) {
 			setDisableElements(true);
 			displayResultsCard('Request failed (invalid data)', null);
@@ -78,7 +87,7 @@ $(document).ready(function(){
 	
 	
 	$('#makeRequestCard').click(function(e){
-		$('#envio').val() == 'true' ? callDirectCard() : callCard();
+		$('#showData').val() == 'true' ? callCreateCard() : callDirectCreateCard();
 	});
 	
 	
@@ -173,6 +182,9 @@ p {
 	height: 280px;
 	width: 100%;
 }
+fieldset {
+	width: 800px;
+}
 
 label {
 	font-family: Arial, Helvetica, sans-serif;
@@ -186,7 +198,7 @@ label {
 	<div class="table">
 		<div class="tableRow">
 			<div class="tableCell">
-				<p>Mode:</p>
+				<p>Mode: </p>
 				<select id="mode" class="inputSelect disableOnSubmit">
 					<option value="Develop">Develop</option>
 					<option value="Sandbox">Sandbox</option>
@@ -209,9 +221,19 @@ label {
 
 
 	<fieldset>
-		<legend>Make a Card:</legend>
+		<legend><b>Create a : <select id="objectToCreate" class="inputSelect disableOnSubmit">
+					<option value="true">card</option>
+					<option value="false">token</option>
+				</select> <b></legend>
 		<div class="table">
 			<div class="tableRow">
+				<div class="tableCell">
+					<p>Show Data: </p>
+					<select id="showData" class="inputSelect disableOnSubmit">
+						<option value="true">true</option>
+						<option value="false">false</option>
+					</select>
+				</div>
 				<div class="tableCell">
 					<p>Customer ID:</p>
 					<input type="text" class="inputText disableOnSubmit" id="customerId" size="50" />
@@ -236,7 +258,7 @@ label {
 				<div class="tableRow">
 					<div class="tableCell">
 						<p>Expiration year:</p>
-						<input type="text" openpay-card="expiration_year" class="inputText disableOnSubmit" id="expirationYear" size="4" value="20" />
+						<input type="text" data-openpay-card="expiration_year" class="inputText disableOnSubmit" id="expirationYear" size="4" value="20" />
 					</div>
 					<div class="tableCell">
 						<p>Expiration month:</p>
@@ -305,15 +327,8 @@ label {
 				</div>
 			</div>
 			<div class="tableRow">
-			<div class="tableCell">
-				<p>Metodo de envio:</p>
-				<select id="envio" class="inputSelect disableOnSubmit">
-					<option value="true">Directo</option>
-					<option value="false">Dos faces</option>
-				</select>
-			</div>
 				<div class="tableCell">
-					<input type="button" class="disableOnSubmit" id="makeRequestCard" value="Make Card" />
+					<input type="button" class="disableOnSubmit" id="makeRequestCard" value="Create" />
 				</div>
 			</div>
 		</div>
