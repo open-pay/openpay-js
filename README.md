@@ -1,20 +1,19 @@
 #Openpay.js
 ##Introduction
 ###What is Openpay.js?
-Openpay.js is a Javascript library designed to facilitate the processing of credit card charges from a website directly invoking our services without invoking the origin server.
+Openpay.js is a Javascript library designed to makes it easy to collect credit card data without having the information touch your server.
 
 ###Benefits:
-* The transaction information does not have to pass through the origin server, it is sent directly to Openpay.
-* It is the easiest and fastest way to integrate a charges module on a ecommerce website.
+* The transaction information does not have to pass through your server, it is sent directly to Openpay.
+* It is the easiest and fastest way to integrate a charges module on your ecommerce website.
 
-##Implementation
-###Add the library
-The first step in the integration is to add the library to the page from which payments will be made. Add the following code: 
+##Getting started
+The first step in the integration is to add the library to the page from which payments will be made. Add the following script tag: 
 ```HTML
-<script type="text/javascript" src="http://public.openpay.mx/openpay.v1.min.js"></script>
+<script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
 ```
 ###Configuration
-Before you can use Openpay.js is necessary to configure both the merchant id, and public key that were assigned when you created your account. With these data, Openpay can identify the account to which the charges are paid.
+Before you can use Openpay.js is necessary to configure both the merchant id, and public key that were assigned when you created your [OpenPay account](https://sandbox-dashboard.openpay.mx/login). With these data, Openpay can identify the account to which the charges are paid.
 
 You can configure both fields with the following methods **OpenPay.setId()** and  **OpenPay.setApiKey()**, respectively:
 ```javascript
@@ -23,29 +22,37 @@ OpenPay.setApiKey('PUBLIC_API_KEY');
 ```
 |Notes:|
 |:------|
-|* Both MERCHANTID as PUBLIC_API_KEY, are obtained from the homepage of your account on the [Openpay](http://www.openpay.mx/) site.|
+|* Both **MERCHANT_ID** as **PUBLIC_API_KEY**, are obtained from the homepage of your OpenPay account.|
 |* You should never use your private key along with the library, because it is visible on the client side.|
 
-###Sandbox Mode
-While the implementation is done it is possible to test prior to actual charges on a real credit card, for which the method is used:**OpenPay.setSandboxMode()** which will help us to enable or disable the sandbox (test) mode requests that are made with OpenPay.js
+###Enable sandbox Mode
+To test your implementation, there Sandox environment, which is enabled with the method: **OpenPay.setSandboxMode()**
 ```javascript
 OpenPay.setSandboxMode(FLAG);
 ```
-The method receives as a parameter a boolean flag (true / false) to turn test mode. If necessary, you can use the OpenPay.getSandboxMode () method to determine the status of the Sandbox Mode at any time:
-```javascript
-OpenPay.getSandboxMode(); // TRUE/FALSE, dependiendo si el modo está activado o no.
-```
+The FLAG parameter is a true / false flag to enable or disable test mode.
 
+If is necessary, you can use the **OpenPay.getSandboxMode()** method to determine the status of the Sandbox Mode at any time:
+```javascript
+OpenPay.getSandboxMode(); // TRUE/FALSE, depends if is activated or not activated.
+```
+|Notes:|
+|:------|
+|* The sandbox environment has the same features as production, but only allows the use of certain card numbers, chosen so that you can test, more information on the [test section]().|
+
+##Creating cards and tokens
 ###Creating cards
-To create a card you need to call the method **OpenPay.card.create()**:
+Once you installed and configured the library, to create a credit card is necessary  to call to method: **OpenPay.card.create()**:
 ```javascript
 OpenPay.card.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CUSTOMER-ID});
 ```
+ * The **CREATE_PARAMETERS_OBJECT** parameter is an javascript object with credit card information.
+ * The **SUCCESS_CALLBACK** parameter define the callback method which will be called when the operation is correct.
+ * The **ERROR_CALLBACK** parameter define the callback method which will be called when the operation has failed.
+ * The **CUSTOMER-ID** parameter is optional. Corresponds to the client identifier previously created.
 
-|Notes|
-|:----|
-|* With this method you can create cards at both merchant and customers.depending on if you include the **CUSTOMER-ID** in the call or not. The **CUSTOMER-ID** parameter is optional.|
-|* You can see the **CUSTOMER-ID**, into dashboard from the list customers.|
+With this method you can create cards at both customers and merchants, depending on if you include the **CUSTOMER-ID** in the call. The **CUSTOMER-ID**, refer to the dashboard from the list customers. The method returns an object card. The definition of object card find it [here](http://docs.openpay.mx/#tarjetas).
+
 ####Example of creating a merchant card:
 ```javascript
 OpenPay.card.create({
@@ -84,27 +91,28 @@ OpenPay.card.create({
       }
 }, onSuccess, onError, "aos2jvwpyyy4nhbodxbu");
 ```
-The first parameter is a Javascript object containing information on the card, while the second and third parameters define the functions that will be called if the operation was successful or failed (respectively).
-The definition of object card find it [here](http://docs.openpay.mx/#tarjetas).
 
 ###Creating cards from html form
-The library Openpay.js gives you the **OpenPay.card.extractFormInfo()** method that draws the card information directly from some form:
-```javascript
-OpenPay.card.extractFormInfo(CREATE_FORM_OBJECT);
-```
-|Notes|
-|:----|
-|The extractFormInfo method receives as a parameter the form object, and based on that creates and returns a JSON object with the card information. This function does not send the information obtained only form values ​​and converts it to JSON format.|
-
-Furthermore the **OpenPay.card.extractFormAndCreate()** method is provided  which precesses the object form and upload the information:
+To make it even easier the integration of your page, the Openpay.js library provides you extraction of the card information from the html form and subsequent delivery by the method:
+ **OpenPay.card.extractFormAndCreate()**
 ```javascript
 OpenPay.card.extractFormAndCreate(CREATE_FORM_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CLIENTE-ID});
 ```
-|Notes|
-|:----|
-|This function is identical to the create method, with the difference that receives as a parameter the form object. This function sent the information, get form data, converts it to JSON format and send the information to openpay's servers.|
+ * The **CREATE_PARAMETERS_OBJECT** parameter is an javascript object with credit card information.
+ * The **SUCCESS_CALLBACK** parameter define the callback method which will be called when the operation is correct.
+ * The **ERROR_CALLBACK** parameter define the callback method which will be called when the operation has failed.
+ * The **CUSTOMER-ID** parameter is optional. Corresponds to the client identifier previously created.
 
-Finally, on the form, all you have to do is add data-attributes **data-openpay-card** and **data-card-data-openpay-address** on inputs where card information is captured and address respectively, as shown then:
+
+The method gets the form values, converts them to a JSON object and send the information to openpay's servers. The method returns an object type card.The definition of object card find it [here](http://docs.openpay.mx/#tarjetas).
+
+If on the other hand you only need to get the json object, the method **OpenPay.extractFormInfo()**  is provided:
+```javascript
+OpenPay.extractFormInfo(CREATE_FORM_OBJECT);
+```
+The **extractFormInfo()** method receives as a parameter the html form, and based on that creates and returns a JSON object with the card information. This method does not make the information sent, only get the form values and converts it to JSON format.
+
+On the html form, all you have to do is add data-attributes **data-openpay-card** and **data-card-data-openpay-address** on inputs where card information is captured and address respectively, as shown then:
 
 ```html
 <form id="processCard" name="processCard">
@@ -126,6 +134,26 @@ Finally, on the form, all you have to do is add data-attributes **data-openpay-c
 
 For a complete example, download the test from the github site:[openpay.js](https://github.com/open-pay/openpay-js)
 
+###Creating tokens
+To create a token is necessary call the method: **OpenPay.token.create()**
+```javascript
+OpenPay.token.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
+```
+ * The **CREATE_PARAMETERS_OBJECT** parameter is an javascript object with credit card information.
+ * The **SUCCESS_CALLBACK** parameter define the callback method which will be called when the operation is correct.
+ * The **ERROR_CALLBACK** parameter define the callback method which will be called when the operation has failed.
+
+The method returns an object token. The definition of object token find it [here](http://docs.openpay.mx/#tokens).
+
+###Creating tokens from html form
+Like with the cards, the following methods are provided to manipulate a html form in order to create tokens:
+```javascript
+OpenPay.token.extractFormAndCreate(CREATE_FORM_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CLIENTE-ID});
+
+OpenPay.extractFormInfo(CREATE_FORM_OBJECT);
+```
+These methods are homologous to those presented in the section of cards.
+
 ###Response functions
 The response functions serve as handles of the result of the transaction. These, are simple Javascript functions but receive input parameters with a predetermined format.
 
@@ -134,46 +162,22 @@ The response functions serve as handles of the result of the transaction. These,
 |* Although the response functions are optional, we recommend to implement the outcome of the transaction can be monitored on the website.|
 
 ###SuccessCallback
-This function is called when the transaction is successful from start to finish. It receives a single parameter which is a Javascript object with a data property representing a [card](http://docs.openpay.mx/#tarjetas) object.
+This function is called when the operation is successful from start to finish. It receives a single parameter which is a Javascript object with a data property representing a [card](http://docs.openpay.mx/#tarjetas) or a [token](http://docs.openpay.mx/#tokens) object.
 Complete example of implementing a function SuccessCallback:
 ```javascript
 function SuccessCallback(response) {
-	alert('Transacción exitosa');
+    alert('Successful operation');
 	var content = '', results = document.getElementById('resultDetail');
-	content .= 'Número de tarjeta: ' + response.data.card_number + '<br />';
-	content .= 'Tipo de tarjeta: ' + response.data.brand + '<br />';
+	content .= 'Id card: ' + response.data.id+ '<br />';
+	content .= 'Holder Name: ' + response.data.holder_name + '<br />';
+	content .= 'Card brand: ' + response.data.brand + '<br />';
 	results.innerHTML = content;
 }
-```
-Example of the card object:
-```json
-{
-   "type":"debit",
-   "brand":"mastercard",
-   "address":{
-      "line1":"Av 5 de Febrero",
-      "line2":"Roble 207",
-      "line3":"Queretaro",
-      "state":"Queretaro",
-      "city":"Querétaro",
-      "postal_code":"76900",
-      "country_code":"MX"
-   },
-   "id":"kzd7vh8hp99k2h46gdu0",
-   "card_number":"1881",
-   "holder_name":"Juan Perez Ramirez",
-   "expiration_year":"20",
-   "expiration_month":"12",
-   "allows_charges":true,
-   "allows_payouts":false,
-   "creation_date":"2014-01-07T19:14:03-06:00",
-   "bank_name":"DESCONOCIDO",
-   "bank_code":"000",
-   "customer_id":null
 }
 ```
+
 ###ErrorCallback
-This function will be executed each time a transaction has failed (for any reason, before or after sending the request). Like the method **SuccessCallback()**, takes a single parameter which is a Javascript object with detailed fault.
+This function will be executed each time an operation has failed (for any reason, before or after sending the request). Like the method **SuccessCallback()**, takes a single parameter which is a Javascript object with detailed fault.
 
 The response object fields are described below:
 
@@ -195,20 +199,7 @@ function ErrorCallback(response) {
 	results.innerHTML = content;
 }
 ```
-Example ErrorCallBack message:
-```json
-{
-   "status":409,
-   "message":"Request error",
-   "data":{
-      "category":"account",
-      "description":"The Order ID has been processed already.",
-      "error_code":1006,
-      "http_code":409,
-      "request_id":"9c899b94-74de-480c-864f-f1d5b226362c"
-   }
-}
-```
+
 ###Types error responses
 In addition to the status field that saves the state of the transaction, it is possible to determine the error that happened through the message field. The message may be one of the following:
 
