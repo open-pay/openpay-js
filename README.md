@@ -38,7 +38,7 @@ OpenPay.getSandboxMode(); // TRUE/FALSE, depends if is activated or not activate
 ```
 |Notes:|
 |:------|
-|* The sandbox environment has the same features as production, but only allows the use of certain card numbers, chosen so that you can test, more information on the [test section]().|
+|* The sandbox environment has the same features as production, but only allows the use of certain card numbers, chosen so that you can test, more information on the [test section](http://docs.openpay.mx/#pruebas).|
 
 ##Creating cards and tokens
 ###Creating cards
@@ -145,6 +145,27 @@ OpenPay.token.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK)
 
 The method returns an object token. The definition of object token find it [here](http://docs.openpay.mx/#tokens).
 
+####Example of creating a token card:
+
+```javascript
+OpenPay.token.create({
+      "card_number":"4111111111111111",
+      "holder_name":"Juan Perez Ramirez",
+      "expiration_year":"20",
+      "expiration_month":"12",
+      "cvv2":"110",
+      "address":{
+         "city":"Querétaro",
+         "line3":"Queretaro",
+         "postal_code":"76900",
+         "line1":"Av 5 de Febrero",
+         "line2":"Roble 207",
+         "state":"Queretaro",
+         "country_code":"MX"
+      }
+}, onSuccess, onError);
+```
+
 ###Creating tokens from html form
 Like with the cards, the following methods are provided to manipulate a html form in order to create tokens:
 ```javascript
@@ -184,8 +205,8 @@ The response object fields are described below:
 |Field|Format|Description|
 | -------- | --------- | --------- |
 |status|Integer|Describe the HTTP status of the transaction. If an error before sending the request occurs, the status will be zero.|
-|message|String|Short description of the error that occurred. It can be one of the following values​​: "Unknown error", "Request error", "Response error (end Unknown status)", "Empty or invalid OpenPay ID", "Empty or invalid API Key", "Browser error", "timeout after X milliseconds ".|
-|data|Objeto|Contains an [Object Error] (http://docs.openpay.mx/ # errors) with the error information in the transaction provided by the server OpenPay.|
+|message|String|Short description of the error that occurred. It can be one of the following values: "Unknown error", "Request error", "Response error (end Unknown status)", "Empty or invalid OpenPay ID", "Empty or invalid API Key", "Browser error", "timeout after X milliseconds ".|
+|data|Objeto|Contains an [Object Error](http://docs.openpay.mx/ # errors) with the error information in the transaction provided by the server OpenPay.|
 
 Complete example of implementing a function ErrorCallback:
 ```javascript
