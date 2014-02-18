@@ -41,7 +41,7 @@ OpenPay.getSandboxMode(); // TRUE/FALSE, depends if is activated or not activate
 |* The sandbox environment has the same features as production, but only allows the use of certain card numbers, chosen so that you can test, more information on the [test section](http://docs.openpay.mx/#pruebas).|
 
 ##Creating tokens
-To create a token is necessary call the method: **OpenPay.token.create()**
+Once you installed and configured the library, to create a token is necessary call the method: **OpenPay.token.create()**
 ```javascript
 OpenPay.token.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
 ```
