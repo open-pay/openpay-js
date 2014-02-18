@@ -33,8 +33,8 @@ $(document).ready(function(){
         }
     }
     
-	function callCreateCard() {
-		var _id = '', _apiKey = '', _data = null, _customerId = '', _dataCard = '';
+	function callCreateToken() {
+		var _id = '', _apiKey = '', _data = null, _dataCard = '';
 		
 		setDisableElements(true);
 		$('#responseCard').text('');
@@ -42,26 +42,20 @@ $(document).ready(function(){
         setMode($('#mode').val());
 		_id = $('#id').val();
 		_apiKey = $('#apiKey').val();
-		_customerId = $('#customerId').val();
         _dataCard = OpenPay.extractFormInfo($('#processCard'));
 		$('#dataCard').text(JSON.stringify(_dataCard));
 		try {
 			OpenPay.setId(_id);
 			OpenPay.setApiKey(_apiKey);
-			if($('#objectToCreate').val() == 'true'){
-				OpenPay.card.create(_dataCard, successCard, errorCard, _customerId);
-			} else {
-				OpenPay.token.create(_dataCard, successCard, errorCard);
-			}
-			
+			OpenPay.token.create(_dataCard, successCard, errorCard);
 		} catch (e) {
 			setDisableElements(true);
 			displayResultsCard('Request failed (invalid data)', null);
 		}
 	};
 	//Envio directo
-	function callDirectCreateCard() {
-		var _id = '', _apiKey = '', _data = null, _customerId = '', _dataCard = '';
+	function callDirectCreateToken() {
+		var _id = '', _apiKey = '', _data = null, _dataCard = '';
 		
 		setDisableElements(true);
 		$('#responseCard').text('');
@@ -69,16 +63,10 @@ $(document).ready(function(){
         setMode($('#mode').val());
 		_id = $('#id').val();
 		_apiKey = $('#apiKey').val();
-		_customerId = $('#customerId').val();
 		try {
 			OpenPay.setId(_id);
 			OpenPay.setApiKey(_apiKey);
-			if($('#objectToCreate').val() == 'true'){
-				OpenPay.card.extractFormAndCreate($('#processCard'), successCard, errorCard, _customerId);
-			} else {
-				OpenPay.token.extractFormAndCreate($('#processCard'), successCard, errorCard);
-			}
-			
+			OpenPay.token.extractFormAndCreate($('#processCard'), successCard, errorCard);
 		} catch (e) {
 			setDisableElements(true);
 			displayResultsCard('Request failed (invalid data)', null);
@@ -87,7 +75,7 @@ $(document).ready(function(){
 	
 	
 	$('#makeRequestCard').click(function(e){
-		$('#showData').val() == 'true' ? callCreateCard() : callDirectCreateCard();
+		$('#showData').val() == 'true' ? callCreateToken() : callDirectCreateToken();
 	});
 	
 	
@@ -222,7 +210,6 @@ label {
 
 	<fieldset>
 		<legend><b>Create a : <select id="objectToCreate" class="inputSelect disableOnSubmit">
-					<option value="true">card</option>
 					<option value="false">token</option>
 				</select> <b></legend>
 		<div class="table">
@@ -233,10 +220,6 @@ label {
 						<option value="true">true</option>
 						<option value="false">false</option>
 					</select>
-				</div>
-				<div class="tableCell">
-					<p>Customer ID:</p>
-					<input type="text" class="inputText disableOnSubmit" id="customerId" size="50" />
 				</div>
 			</div>
 		</div>
@@ -265,13 +248,15 @@ label {
 						<input type="text" data-openpay-card="expiration_month" class="inputText disableOnSubmit" id="expirationMonth" size="4"
 							value="04" /> 
 					</div>
+				</div>
+				
+				<div class="tableRow">
 					<div class="tableCell">
 						<p>cvv2:</p>
 						<input type="text" data-openpay-card="cvv2" class="inputText disableOnSubmit" id="cvv2" size="5" value="110" />
 					</div>
-
 				</div>
-
+				
 				<fieldset>
 					<legend>Address:</legend>
 					<div class="tableRow">
@@ -301,6 +286,8 @@ label {
 							<p>State:</p>
 							<input type="text" data-openpay-card-address="state" class="inputText disableOnSubmit" id="state" size="20" value="Queretaro" />
 						</div>
+					</div>
+					<div class="tableRow">
 						<div class="tableCell">
 							<p>Country code:</p>
 							<input type="text" data-openpay-card-address="country_code" class="inputText disableOnSubmit" id="country_code" size="3" value="MX" />
