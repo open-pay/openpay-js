@@ -238,7 +238,7 @@ OpenPay.card.cardType('3530111333300000'); // JCB
 OpenPay can use the device information of a transaction in order to better detect fraudulent transactions.
 To do this, add the following code to your checkout page, when collecting payment information:
 ```HTML
-<script type="text/javascript" src="http://public.openpay.mx/openpay-data.v1.min.js"></script>
+<script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
 ```
 
 Then, in your javascript, call OpenPay.deviceData.setup() to generate a Device Data.
