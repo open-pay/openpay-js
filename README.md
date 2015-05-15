@@ -1,4 +1,5 @@
-#Openpay.js
+![Openpay JS](http://www.openpay.mx/img/github/js.jpg)
+
 ##Introduction
 ###What is Openpay.js?
 Openpay.js is a Javascript library designed to makes it easy to collect credit card data without having the information touch your server.
