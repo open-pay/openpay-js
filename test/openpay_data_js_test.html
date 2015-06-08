@@ -2,69 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es-ES">
 <head profile="http://gmpg.org/xfn/11">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script type='text/javascript' src="http://public.openpay.mx/openpay.v1.js"></script>
+<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay.v1.js"></script>
 <!-- Add openpay-data.v1.js after opnepay.v1.js -->
-<script type='text/javascript' src="http://public.openpay.mx/openpay-data.v1.js"></script>
+<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	function setDisableElements(_status){
-		$('.disableOnSubmit').attr('disabled', _status);
-	};
-	
-	function displayResultsCard(_message, _response, _sandboxMode) {
-		setDisableElements(false);
-		$('#responseCard').text(_message + (_response !== null ? ' ' + JSON.stringify(_response) : ''));
-	};
-	
-	function successCard(_responseData) {
-		displayResultsCard('Request proceessed successfully: ', _responseData);
-	};
-	function errorCard(_errorResponseData){
-		displayResultsCard('An error has been ocurred: ', _errorResponseData);
-	};
-	
-	function callCard() {
-		var _id = '', _apiKey = '', _data = null, _customerId = '';
-		
-		setDisableElements(true);
-		$('#responseCard').text('');
-
-		OpenPay.setSandboxMode( ($('#mode').val() == 'true' ? true : false) );
-		$('#responseMode').text( '(' + (OpenPay.getSandboxMode() ? 'sandbox' : 'production') + ' mode)' );
-
-		_id = $('#id').val();
-		_apiKey = $('#apiKey').val();
-		_customerId = $('#customerId').val();
-		
-		try {
-			_data = JSON.parse(JSON.stringify(eval("(" + $('#dataCard').val() + ")")));
-			_data = {
-				'card_number' 		: $('#cardNumber').val(),
-				'holder_name' 		: $('#holderName').val(),
-				'expiration_year' 	: $('#expirationYear').val(),
-				'expiration_month' 	: $('#expirationMonth').val(),
-				'cvv2' 				: $('#cvv2').val(),
-			}
-			OpenPay.setId(_id);
-			OpenPay.setApiKey(_apiKey);
-			OpenPay.card.create(_data, successCard, errorCard, _customerId);
-		} catch (e) {
-			setDisableElements(true);
-			displayResultsCard('Request failed (invalid data)', null);
-		}
-	};
-	
-	$('#makeRequestCard').click(function(e){
-		callCard();
-	});
-
-	OpenPay.setDevelopMode(true);
+	OpenPay.setSandboxMode(true);
 
 	// Setup Form after calling setSandboxMode
 	var deviceDataId = OpenPay.deviceData.setup("openpayForm", "deviceIdField");
+	//var deviceDataId = OpenPay.deviceData.setup();
 	
 	$('#deviceId').text(deviceDataId);
+	$('#deviceSessionId').val($('#deviceIdField').val());
 });
 
 </script>
@@ -138,7 +89,7 @@ label {
 <div class="table">
 <form id="openpayForm">
 <fieldset>
-  <legend>Make a Card:</legend>
+  <legend>SessionId</legend>
   	<div class="tableRow">
 		<div class="tableCell">
 			<p>Generated Session Id: <span id="deviceId"></span></p>
@@ -146,49 +97,9 @@ label {
 	</div>
 	<div class="tableRow">
 		<div class="tableCell">
-			<p>Customer ID:</p>
-			<input type="text" class="inputText disableOnSubmit" id="customerId" size="50" />
+			<p>Hidden value:</p>
+			<input type="text" class="inputText disableOnSubmit" id="deviceSessionId" size="50"/>
 		</div>
-	</div>
-	<div class="tableRow">
-		<div class="tableCell">
-			<p>Holder Name:</p>
-			<input type="text" class="inputText disableOnSubmit" id="holderName" size="50" />
-		</div>
-	</div>
-	<div class="tableRow">
-		<div class="tableCell">
-			<p>Card Number:</p>
-			<input type="text" class="inputText disableOnSubmit" id="cardNumber" size="50" />
-		</div>
-	</div>
-	<div class="tableRow">
-		<div class="tableCell">
-			<p>Expiration Year:</p>
-			<input type="text" class="inputText disableOnSubmit" id="expirationYear" size="50" />
-		</div>
-	</div>
-	<div class="tableRow">
-		<div class="tableCell">
-			<p>Expiration Month:</p>
-			<input type="text" class="inputText disableOnSubmit" id="expirationMonth" size="50" />
-		</div>
-	</div>
-	<div class="tableRow">
-		<div class="tableCell">
-			<p>CVV2:</p>
-			<input type="text" class="inputText disableOnSubmit" id="cvv2" size="50" />
-		</div>
-	</div>
-	<div class="tableRow">
-		<div class="tableCell">
-			<p class="response">Request response:</p>
-			<textarea id="responseCard" class="inputTextarea disableOnSubmit" rows="19" cols="50">
-			</textarea>
-		</div>
-	</div>
-	<div class="tableRow">
-		<input type="button" class="disableOnSubmit" id="makeRequestCard" value="Make Card">
 	</div>
 </fieldset>
 </form>
