@@ -59,7 +59,7 @@ $(document).ready(function(){
 		callCard();
 	});
 
-	OpenPay.setSandboxMode(true);
+	OpenPay.setDevelopMode(true);
 
 	// Setup Form after calling setSandboxMode
 	var deviceDataId = OpenPay.deviceData.setup("openpayForm", "deviceIdField");
