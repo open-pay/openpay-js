@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "homepage": "https://github.com/genaromadrid/openpay-js",
   "authors": [
-    "Genaro Madrid <genaro@appio.mx>"
+    "Genaro Madrid <genmadrid@gmail.com>"
   ],
   "description": "Openpay Javascript bindings",
   "main": "lib/openpay.v1.js",
