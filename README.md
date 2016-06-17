@@ -193,7 +193,7 @@ To validate a card number can use the method **OpenPay.card.validateCardNumber()
 This method receives as parameter a String with the card number to be validated and return one true / false if it is a valid card number and is accepted by Openpay. 
 Example:
 ```javascript
-OpenPay.card.validateCardNumber('5555555555554444);
+OpenPay.card.validateCardNumber('5555555555554444');
 ```
 This method is very useful for determining whether a card number is a valid candidate for use with Openpay, so we recommend that you use it before attempting to charge a card.
 
