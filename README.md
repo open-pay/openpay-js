@@ -21,9 +21,9 @@ You can configure both fields with the following methods **OpenPay.setId()** and
 OpenPay.setId('MERCHANT_ID');
 OpenPay.setApiKey('PUBLIC_API_KEY');
 ```
-|Notes:|
-|:------|
-|* Both **MERCHANT_ID** as **PUBLIC_API_KEY**, are obtained from the homepage of your OpenPay account.|
+|Notes:                                                                                                   |
+|:--------------------------------------------------------------------------------------------------------|
+|* Both **MERCHANT_ID** as **PUBLIC_API_KEY**, are obtained from the homepage of your OpenPay account.    |
 |* You should never use your private key along with the library, because it is visible on the client side.|
 
 ### Enable sandbox Mode
@@ -37,9 +37,10 @@ If is necessary, you can use the **OpenPay.getSandboxMode()** method to determin
 ```javascript
 OpenPay.getSandboxMode(); // TRUE/FALSE, depends if is activated or not activated.
 ```
-|Notes:|
-|:------|
-|* The sandbox environment has the same features as production, but only allows the use of certain card numbers, chosen so that you can test, more information on the [test section](http://docs.openpay.mx/#pruebas).|
+|Notes:                                                                                                        |
+|:-------------------------------------------------------------------------------------------------------------|
+|* The sandbox environment has the same features as production, but only allows the use of certain card        |
+|numbers, chosen so that you can test, more information on the [test section](http://docs.openpay.mx/#pruebas).|
 
 ## Creating tokens
 Once you installed and configured the library, to create a token is necessary call the method: **OpenPay.token.create()**
@@ -118,6 +119,25 @@ OpenPay.token.extractFormAndCreate(
 The method returns an object type token. The definition of object token find it [here](http://docs.openpay.mx/#tokens).
 
 For a complete example, download the test from the github site:[openpay.js](https://github.com/open-pay/openpay-js)
+
+## Creating Group Tokens
+If your Merchant account is part of a group of merchants, you can use the library to create shared group tokens. To do so, you must first configure
+your group credentials:
+
+```javascript
+OpenPay.Group.setId('GROUP_ID');
+OpenPay.Group.setApiKey('PUBLIC_API_KEY');
+```
+
+You can then use the following methods in the same way as with regular tokens:
+
+```javascript
+OpenPay.Group.token.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
+
+OpenPay.Group.token.extractFormAndCreate(CREATE_FORM_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CLIENTE-ID});
+```
+
+
 
 ## How to handle responses
 The response functions serve as handles of the result of the transaction. These, are simple Javascript functions but receive and object type response.
