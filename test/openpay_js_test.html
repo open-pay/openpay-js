@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es-ES">
 <head profile="http://gmpg.org/xfn/11">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay.v1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay.v1.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	function setDisableElements(_status){
@@ -76,6 +76,152 @@ $(document).ready(function(){
 	
 	$('#makeRequestCard').click(function(e){
 		$('#showData').val() == 'true' ? callCreateToken() : callDirectCreateToken();
+	});
+
+	$('#updateRequestCard').click(function(e){
+		var _id = '', _apiKey = '', _data = null, _dataCard = '', complete = false;
+		if($('#apiKeyPut').val()==='' || $('#idPut')===''){
+			alert("The API Key and Merchant Id are required");
+		}
+		else {
+			setMode($('#mode').val());
+			_id = $('#idPut').val();
+			_apiKey = $('#apiKeyPut').val();
+			if($('#groupPut').val()!==null && $('#groupPut').val().length>0){
+				if( ($('#customerPut').val()!=null && $('#customerPut').val().length>0) && ($('#cardPut').val()!=null && $('#cardPut').val().length>0 ) ){
+					try {
+			        	OpenPay.setId(_id);
+						OpenPay.setApiKey(_apiKey); 
+						OpenPay.Group.setId($('#groupPut').val());
+						_customerId = ($('#customerPut').val()!=null && $('#customerPut').val().length>0) ? $('#customerPut').val() : null; 
+						_mycard 	= ($('#cardPut').val()!=null 	 && $('#cardPut').val().length>0) 	? $('#cardPut').val() : null;
+						OpenPay.Group.card.extractFormAndUpdateCard($('#putUpdateCard'), successCard, errorCard, _customerId, _mycard);
+			        } catch(e){
+			        	setDisableElements(true);
+						displayResultsCard('Request failed (invalid data)', e, null);
+			        }
+				}
+				else {
+					alert('If you send Group Id, too you will should send customer id and card id');
+				}
+			}
+			else if( ($('#customerPut').val()!=null && $('#customerPut').val().length>0) || ($('#cardPut').val()!=null && $('#cardPut').val().length>0) ) {
+				try {
+		        	OpenPay.setId(_id);
+					OpenPay.setApiKey(_apiKey); 
+					_customerId = ($('#customerPut').val()!=null && $('#customerPut').val().length>0) ? $('#customerPut').val() : null; 
+					_mycard 	= ($('#cardPut').val()!=null 	 && $('#cardPut').val().length>0) 	? $('#cardPut').val() : null;
+					OpenPay.card.extractFormAndUpdateCard($('#putUpdateCard'), successCard, errorCard, _customerId, _mycard);
+		        } catch(e){
+		        	setDisableElements(true);
+					displayResultsCard('Request failed (invalid data)', e, null);
+		        }
+		    }
+		    else {
+		    	alert("You should send to Customer ID or Card ID, other option, you send  Group ID with Customer ID and Card ID.");
+		    }
+		}
+	});
+
+	$('#updateRequestCardJson').click(function(e){
+		var _id = '', _apiKey = '', _data = null, _dataCard = '', complete = false;
+		if($('#apiKeyPut').val()==='' || $('#idPut')===''){
+			alert("The API Key and Merchant Id are required");
+		}
+		else {
+			setMode($('#mode').val());
+			_id = $('#idPut').val();
+			_apiKey = $('#apiKeyPut').val();
+			if($('#groupPut').val()!==null && $('#groupPut').val().length>0){
+				if( ($('#customerPut').val()!=null && $('#customerPut').val().length>0) && ($('#cardPut').val()!=null && $('#cardPut').val().length>0 ) ){
+					try {
+						var coma = false;
+			        	OpenPay.setId(_id);
+						OpenPay.setApiKey(_apiKey); 
+						OpenPay.Group.setId($('#groupPut').val());
+						_customerId = ($('#customerPut').val()!=null && $('#customerPut').val().length>0) ? $('#customerPut').val() : null; 
+						_mycard 	= ($('#cardPut').val()!=null 	 && $('#cardPut').val().length>0) 	? $('#cardPut').val() : null;
+						params = '{';
+						if($("#holderNamePut").val().length > 0){
+							coma = true;
+							params += '"holder_name":"'+$("#holderNamePut").val()+'"';
+						}
+						if($("#cvv2Put").val().length > 0){
+							if(coma){
+								params += ',';
+							}
+							params += '"cvv2":"'+$("#cvv2Put").val()+'"';
+							coma = true;
+						}
+						if($("#expirationYearPut").val().length > 0){
+							if(coma){
+								params += ',';
+							}
+							params += '"expiration_year":"'+$("#expirationYearPut").val()+'"';
+							coma = true;
+						}
+						if($("#expirationMonthPut").val().length > 0){
+							if(coma){
+								params += ',';
+							}
+							params += '"expiration_month":"'+$("#expirationMonthPut").val()+'"';
+							coma = true;
+						}
+						params += '}';
+						OpenPay.Group.card.update(JSON.parse(params), successCard, errorCard, _customerId, _mycard);
+			        } catch(e){
+			        	setDisableElements(true);
+						displayResultsCard('Request failed (invalid data)', e, null);
+			        }
+				}
+				else {
+					alert('If you send Group Id, too you will should send customer id and card id');
+				}
+			}
+			else if( ($('#customerPut').val()!=null && $('#customerPut').val().length>0) || ($('#cardPut').val()!=null && $('#cardPut').val().length>0) ) {
+				var coma = false;
+				try {
+		        	OpenPay.setId(_id);
+					OpenPay.setApiKey(_apiKey); 
+					_customerId = ($('#customerPut').val()!=null && $('#customerPut').val().length>0) ? $('#customerPut').val() : null; 
+					_mycard 	= ($('#cardPut').val()!=null 	 && $('#cardPut').val().length>0) 	? $('#cardPut').val() : null;
+					params = '{';
+					if($("#holderNamePut").val().length > 0){
+						coma = true;
+						params += '"holder_name":"'+$("#holderNamePut").val()+'"';
+					}
+					if($("#cvv2Put").val().length > 0){
+						if(coma){
+							params += ',';
+						}
+						params += '"cvv2":"'+$("#cvv2Put").val()+'"';
+						coma = true;
+					}
+					if($("#expirationYearPut").val().length > 0){
+						if(coma){
+							params += ',';
+						}
+						params += '"expiration_year":"'+$("#expirationYearPut").val()+'"';
+						coma = true;
+					}
+					if($("#expirationMonthPut").val().length > 0){
+						if(coma){
+							params += ',';
+						}
+						params += '"expiration_month":"'+$("#expirationMonthPut").val()+'"';
+						coma = true;
+					}
+					params += '}';
+					OpenPay.card.update(JSON.parse(params), successCard, errorCard, _customerId, _mycard);
+		        } catch(e){
+		        	setDisableElements(true);
+					displayResultsCard('Request failed (invalid data)', e, null);
+		        }
+		    }
+		    else {
+		    	alert("You should send to Customer ID or Card ID, other option, you send  Group ID with Customer ID and Card ID.");
+		    }
+		}
 	});
 	
 	
@@ -391,7 +537,58 @@ label {
 		</div>
 	</fieldset>
 
-
+	<fieldset>
+		<legend>Update card data:</legend>
+		<div class="table">
+			<form id="getUpdateCard">
+				<div class="tableRow">
+					<div class="tableCell"><p>Request API Key:</p> <input type="text" class="inputText disableOnSubmit" id="apiKeyPut" value="pk_c74367b872364e91b3143c5d87d64bb8" size="50" /></div>
+					<div class="tableCell"><p>Merchant ID:</p> <input type="text" class="inputText disableOnSubmit" id="idPut" value="mqxn16kmicqj2fde6fhi" size="50" /></div>
+				</div>
+				<div class="tableRow">
+					<div class="tableCell"><p>Group ID:</p> <input type="text" class="inputText disableOnSubmit" id="groupPut" value="" size="50" /></div>
+					<div class="tableCell"><p>Customer ID:</p> <input type="text" class="inputText disableOnSubmit" id="customerPut" value="" size="50" /></div>
+				</div>
+				<div class="tableRow">
+					<div class="tableCell"><p>Card ID:</p> <input type="text" class="inputText disableOnSubmit" id="cardPut" value="" size="50" /></div>
+				</div>
+			</form>
+		</div>
+		<div class="table">
+			<form id="putUpdateCard">
+				<div class="tableRow">
+					<div class="tableCell">
+						<p>Holder Name:</p>
+						<input type="text" data-openpay-card="holder_name" class="inputText disableOnSubmit" id="holderNamePut" size="50"
+							value="Juan Perez Ramirez" />
+					</div>
+					<div class="tableCell">
+						<p>cvv2:</p>
+						<input type="text" data-openpay-card="cvv2" class="inputText disableOnSubmit" id="cvv2Put" size="5" value="110" />
+					</div>
+				</div>
+				<div class="tableRow">
+					<div class="tableCell">
+						<p>Expiration year:</p>
+						<input type="text" data-openpay-card="expiration_year" class="inputText disableOnSubmit" id="expirationYearPut" size="4" value="20" />
+					</div>
+					<div class="tableCell">
+						<p>Expiration month:</p>
+						<input type="text" data-openpay-card="expiration_month" class="inputText disableOnSubmit" id="expirationMonthPut" size="4"
+							value="04" /> 
+					</div>
+				</div>
+				<div class="tableRow">
+					<div class="tableCell">
+						<p>* You can modified the fields.</p>
+					</div>
+					<div class="tableCell"><input type="button" class="disableOnSubmit" id="updateRequestCard" value="Update Form" /></div>
+					<div class="tableCell"><input type="button" class="disableOnSubmit" id="updateRequestCardJson" value="Update Json" /></div>
+				</div>
+			</form>
+		</div>
+	</fieldset>
+</br>
 </body>
 
 </html>
