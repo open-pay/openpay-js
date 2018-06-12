@@ -3,7 +3,8 @@
 <head profile="http://gmpg.org/xfn/11">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay.v1.js"></script>
+<!-- <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay.v1.js"></script> -->
+<script type='text/javascript' src="../lib/openpay.v1.js"></script> 
 <script type="text/javascript">
 $(document).ready(function(){
 	function setDisableElements(_status){
@@ -139,6 +140,7 @@ $(document).ready(function(){
 			        	OpenPay.setId(_id);
 						OpenPay.setApiKey(_apiKey); 
 						OpenPay.Group.setId($('#groupPut').val());
+						OpenPay.Group.setApiKey(_apiKey);
 						_customerId = ($('#customerPut').val()!=null && $('#customerPut').val().length>0) ? $('#customerPut').val() : null; 
 						_mycard 	= ($('#cardPut').val()!=null 	 && $('#cardPut').val().length>0) 	? $('#cardPut').val() : null;
 						params = '{';
@@ -166,6 +168,9 @@ $(document).ready(function(){
 							}
 							params += '"expiration_month":"'+$("#expirationMonthPut").val()+'"';
 							coma = true;
+						}
+						if(coma){
+							params += ', "merchant_id":"'+_id+'"';
 						}
 						params += '}';
 						OpenPay.Group.card.update(JSON.parse(params), successCard, errorCard, _customerId, _mycard);
