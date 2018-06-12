@@ -120,6 +120,19 @@ The method returns an object type token. The definition of object token find it 
 
 For a complete example, download the test from the github site:[openpay.js](https://github.com/open-pay/openpay-js)
 
+## Updating Cards
+
+Openpay.js allows you to update card information of stored customer cards. This is useful in order to avoid sending this information to your back-end for updating.
+
+The data that can be updated is: Holder name, expiration date, and expiration year. In addition, the API allows to send a CVV that will be used in the next charge with this card.
+The method used for this is:
+**OpenPay.card.update()**
+```javascript
+OpenPay.card.update(UPDATE_CARD_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CLIENTE-ID}, CARD_ID);
+```
+
+You can find the definition of the UPDATE_CARD_OBJECT [here](http://docs.openpay.mx/#actualizar-c-digo-de-seguridad-de-tarjeta)
+
 ## Creating Group Tokens
 If your Merchant account is part of a group of merchants, you can use the library to create shared group tokens. To do so, you must first configure
 your group credentials:
@@ -136,8 +149,6 @@ OpenPay.Group.token.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CAL
 
 OpenPay.Group.token.extractFormAndCreate(CREATE_FORM_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CLIENTE-ID});
 ```
-
-
 
 ## How to handle responses
 The response functions serve as handles of the result of the transaction. These, are simple Javascript functions but receive and object type response.
