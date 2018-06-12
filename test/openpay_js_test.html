@@ -169,9 +169,6 @@ $(document).ready(function(){
 							params += '"expiration_month":"'+$("#expirationMonthPut").val()+'"';
 							coma = true;
 						}
-						if(coma){
-							params += ', "merchant_id":"'+_id+'"';
-						}
 						params += '}';
 						OpenPay.Group.card.update(JSON.parse(params), successCard, errorCard, _customerId, _mycard);
 			        } catch(e){
