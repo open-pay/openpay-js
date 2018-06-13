@@ -230,7 +230,7 @@ $(document).ready(function(){
 	// --------------------------
 	
 	function validate() {
-		alert('validando...')
+		console.log("validando...");
 		var _number = '', _cvc = '', _month = '', _year = '', _type = '';
 		setDisableElements(true);
 
@@ -241,15 +241,16 @@ $(document).ready(function(){
 		$('#typeNumber').prop('checked', false);
 		$('#typeName').text('');
 		
-		_number = ($('#cardNumber').val() != '' ? $('#cardNumber').val() : $('#cardTypes').val());
+		_number = ($('#cardNumberValidation').val() != '' ? $('#cardNumberValidation').val() : $('#cardTypes').val());
 		_cvc = $('#cvc').val();
 		_month = $('#expiryMonth').val();
 		_year = $('#expiryYear').val();
 		
 		if (OpenPay.card.validateCardNumber(_number)) {
 			$('#valid').prop('checked', true);
-
+			console.log(_number);
 			_type = OpenPay.card.cardType(_number);
+			console.log(_type);
 			if (_type != '') {
 				$('#typeNumber').prop('checked', true);
 				$('#typeName').text('[' + _type.toUpperCase() + ']');
@@ -491,7 +492,7 @@ label {
 				</div>
 				<div class="tableCell">
 					<p>Type Card Number:</p>
-					<input type="text" id="cardNumber" class="inputText disableOnSubmit" />
+					<input type="text" id="cardNumberValidation" class="inputText disableOnSubmit" />
 				</div>
 			</div>
 			<div class="tableRow">
@@ -511,11 +512,16 @@ label {
 						<option value="11">11</option>
 						<option value="12">12</option>
 					</select> <select id="expiryYear" class="inputSelect disableOnSubmit">
-						<option value="2012">2012</option>
-						<option value="2013">2013</option>
-						<option value="2014" selected="selected">2014</option>
-						<option value="2015">2015</option>
 						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018" selected="selected">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="18">18</option>
+						<option value="19">19</option>
+						<option value="20">20</option>
 					</select>
 				</div>
 				<div class="tableCell">
