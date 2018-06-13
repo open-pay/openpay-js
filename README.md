@@ -9,7 +9,7 @@ Openpay.js is a Javascript library designed to makes it easy to collect credit c
 * It is the easiest and fastest way to integrate a charges module on your ecommerce website.
 
 ## Getting started
-The first step in the integration is to add the library to the page from which payments will be made. Add the following script tag: 
+The first step in the integration is to add the library to the page from which payments will be made. Add the following script tag:
 ```HTML
 <script type="text/javascript" src="https://resources.openpay.mx/lib/openpay.v1.min.js"></script>
 ```
@@ -101,7 +101,7 @@ The method's params are:
      <p>Postal code:</p><input data-openpay-card-address="postal_code" size="6" type="text">
      <p>City:</p><input data-openpay-card-address="city" size="20" type="text">
      <p>State:</p><input data-openpay-card-address="state" size="20" type="text">
-     <p>Country code:</p><input data-openpay-card-address="country_code" size="3" type="text"> 
+     <p>Country code:</p><input data-openpay-card-address="country_code" size="3" type="text">
      <input id="makeRequestCard" type="button" value="Make Card">
  </form>
  ```
@@ -110,9 +110,9 @@ The method's params are:
 Later when generating the token, make an invocation to **OpenPay.token.extractFormAndCreate()**, as show below:
 ```javascript
 OpenPay.token.extractFormAndCreate(
-      $('#processCard'), 
-      successCard, 
-      errorCard, 
+      $('#processCard'),
+      successCard,
+      errorCard,
       _customerId);
 ```
 
@@ -200,7 +200,7 @@ function ErrorCallback(response) {
 ### Types error responses
 In addition to the status field that saves the state of the transaction, it is possible to determine the error that happened through the message field. The message may be one of the following:
 
-* **"Empty or invalid OpenPay ID"**: It happens when you have not properly configured the user ID with the OpenPay.setId () method 
+* **"Empty or invalid OpenPay ID"**: It happens when you have not properly configured the user ID with the OpenPay.setId () method
 * **"Empty or invalid API Key"**: Like the above error happens when you have not configured your API Key with OpenPay.setApiKey () method
 * **"Browser error"**: It is triggered when there is an error in the browser that prevents the request to succeed. It may be caused by caracterísiticas that are necessary to run some code and are missing in the browser. For more information see the "Compatibility and Requirements" section.
 * **"Request error"**: This error indicates that an error occurred in the server Openpay. May be due to missing parameters, formats, or some other problem that prevents a successful transaction.
@@ -221,7 +221,7 @@ Available methods are:
 ### Number card validation
 To validate a card number can use the method **OpenPay.card.validateCardNumber()**.
 
-This method receives as parameter a String with the card number to be validated and return one true / false if it is a valid card number and is accepted by Openpay. 
+This method receives as parameter a String with the card number to be validated and return one true / false if it is a valid card number and is accepted by Openpay.
 Example:
 ```javascript
 OpenPay.card.validateCardNumber('5555555555554444');
@@ -249,7 +249,9 @@ For this purpose is used the method **OpenPay.card.validateExpiry()**.
 Receive two strings as parameters to represent the month and year of expiry of the card. Returns true / false if the combination of both data, month and year, determine a valid expiration date. Example:
 ```javascript
 OpenPay.card.validateExpiry('01', '2013'); // inválido
-OpenPay.card.validateExpiry('05', '2015'); // válido
+OpenPay.card.validateExpiry('01', '13'); // inválido
+OpenPay.card.validateExpiry('05', '2030'); // válido
+OpenPay.card.validateExpiry('05', '30'); // válido
 ```
 
 ### Card Type
@@ -283,9 +285,9 @@ var deviceDataId = OpenPay.deviceData.setup("formId");
 
 This method generates an identifier for the customer's device data. This value needs to be stored during checkout, and sent to OpenPay when processing the charge.
 
-The method takes two optional parameters: 
+The method takes two optional parameters:
 
-The first is an existing form's id. If given, a new hidden input field will be added to it, with the value of the generated deviceDataId. 
+The first is an existing form's id. If given, a new hidden input field will be added to it, with the value of the generated deviceDataId.
 
 The second parameter specifies the generated field's name and id. If ommited, they will default to "deviceDataId".
 
