@@ -11,7 +11,7 @@ Openpay.js is a Javascript library designed to makes it easy to collect credit c
 ## Getting started
 The first step in the integration is to add the library to the page from which payments will be made. Add the following script tag:
 ```HTML
-<script type="text/javascript" src="https://resources.openpay.mx/lib/openpay.v1.min.js"></script>
+<script type="text/javascript" src="https://resources.openpay.mx/lib/openpay-js/1.2.38/openpay.v1.min.js"></script>
 ```
 ### Configuration
 Before you can use Openpay.js is necessary to configure both the merchant id, and public key that were assigned when you created your [OpenPay account](https://sandbox-dashboard.openpay.mx/login). With these data, Openpay can identify the account to which the charges are paid.
@@ -272,7 +272,7 @@ OpenPay.card.cardType('3530111333300000'); // JCB
 OpenPay can use the device information of a transaction in order to better detect fraudulent transactions.
 To do this, add the following code to your checkout page, when collecting payment information:
 ```HTML
-<script type="text/javascript" src="https://resources.openpay.mx/lib/openpay-data.v1.min.js"></script>
+<script type="text/javascript" src="https://resources.openpay.mx/lib/openpay-data-js/1.2.38/openpay-data.v1.min.js"></script>
 ```
 
 Then, in your javascript, call OpenPay.deviceData.setup() to generate a Device Data.
