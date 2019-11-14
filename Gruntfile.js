@@ -8,20 +8,25 @@ module.exports = function(grunt) {
         ie8 : true,
         output : {
           ascii_only : true
-        }
+        }        
       },
       openpayJs: {
         src: 'lib/openpay.v1.js',
-        dest: 'lib/openpay.v1.min.js'
+        dest: 'lib/openpay.v1.min.js',
+        options : {
+          banner: '/*! openpay.js v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */'
+        }
       },
       openpayData: {
         src: 'lib/openpay-data.v1.js',
-        dest: 'lib/openpay-data.v1.min.js'
+        dest: 'lib/openpay-data.v1.min.js',
+        options : {
+          banner: '/*! openpay-data.js v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */'
+        }
       }
     }
   });
 
-  // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
 };
