@@ -1,4 +1,4 @@
-![Openpay JS](http://www.openpay.mx/img/github/js.jpg)
+![Openpay JS](https://www.openpay.mx/img/github/js.jpg)
 
 ## Introduction
 ### What is Openpay.js?
