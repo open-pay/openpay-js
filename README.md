@@ -1,19 +1,19 @@
-![Openpay JS](http://www.openpay.mx/img/github/js.jpg)
+![Openpay JS](https://www.openpay.mx/img/github/js.jpg)
 
-##Introduction
-###What is Openpay.js?
+## Introduction
+### What is Openpay.js?
 Openpay.js is a Javascript library designed to makes it easy to collect credit card data without having the information touch your server.
 
-###Benefits:
+### Benefits:
 * The transaction information does not have to pass through your server, it is sent directly to Openpay.
 * It is the easiest and fastest way to integrate a charges module on your ecommerce website.
 
-##Getting started
-The first step in the integration is to add the library to the page from which payments will be made. Add the following script tag: 
+## Getting started
+The first step in the integration is to add the library to the page from which payments will be made. Add the following script tag:
 ```HTML
-<script type="text/javascript" src="https://resources.openpay.mx/lib/openpay.v1.min.js"></script>
+<script type="text/javascript" src="https://resources.openpay.mx/lib/openpay-js/1.2.38/openpay.v1.min.js"></script>
 ```
-###Configuration
+### Configuration
 Before you can use Openpay.js is necessary to configure both the merchant id, and public key that were assigned when you created your [OpenPay account](https://sandbox-dashboard.openpay.mx/login). With these data, Openpay can identify the account to which the charges are paid.
 
 You can configure both fields with the following methods **OpenPay.setId()** and  **OpenPay.setApiKey()**, respectively:
@@ -21,12 +21,12 @@ You can configure both fields with the following methods **OpenPay.setId()** and
 OpenPay.setId('MERCHANT_ID');
 OpenPay.setApiKey('PUBLIC_API_KEY');
 ```
-|Notes:|
-|:------|
-|* Both **MERCHANT_ID** as **PUBLIC_API_KEY**, are obtained from the homepage of your OpenPay account.|
+|Notes:                                                                                                   |
+|:--------------------------------------------------------------------------------------------------------|
+|* Both **MERCHANT_ID** as **PUBLIC_API_KEY**, are obtained from the homepage of your OpenPay account.    |
 |* You should never use your private key along with the library, because it is visible on the client side.|
 
-###Enable sandbox Mode
+### Enable sandbox Mode
 To test your implementation, there Sandox environment, which is enabled with the method: **OpenPay.setSandboxMode()**
 ```javascript
 OpenPay.setSandboxMode(FLAG);
@@ -37,11 +37,12 @@ If is necessary, you can use the **OpenPay.getSandboxMode()** method to determin
 ```javascript
 OpenPay.getSandboxMode(); // TRUE/FALSE, depends if is activated or not activated.
 ```
-|Notes:|
-|:------|
-|* The sandbox environment has the same features as production, but only allows the use of certain card numbers, chosen so that you can test, more information on the [test section](http://docs.openpay.mx/#pruebas).|
+|Notes:                                                                                                        |
+|:-------------------------------------------------------------------------------------------------------------|
+|* The sandbox environment has the same features as production, but only allows the use of certain card        |
+|numbers, chosen so that you can test, more information on the [test section](http://docs.openpay.mx/#pruebas).|
 
-##Creating tokens
+## Creating tokens
 Once you installed and configured the library, to create a token is necessary call the method: **OpenPay.token.create()**
 ```javascript
 OpenPay.token.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
@@ -53,7 +54,7 @@ The method's params are:
 
 The method returns an object token. The definition of object token find it [here](http://docs.openpay.mx/#tokens).
 
-####Example of creating a token card:
+#### Example of creating a token card:
 
 ```javascript
 OpenPay.token.create({
@@ -74,7 +75,7 @@ OpenPay.token.create({
 }, onSuccess, onError);
 ```
 
-##Creating tokens from html form
+## Creating tokens from html form
 The Openpay.js library provides you extraction of the card information from the html form and subsequent delivery by the method:
  **OpenPay.token.extractFormAndCreate()**
 ```javascript
@@ -100,7 +101,7 @@ The method's params are:
      <p>Postal code:</p><input data-openpay-card-address="postal_code" size="6" type="text">
      <p>City:</p><input data-openpay-card-address="city" size="20" type="text">
      <p>State:</p><input data-openpay-card-address="state" size="20" type="text">
-     <p>Country code:</p><input data-openpay-card-address="country_code" size="3" type="text"> 
+     <p>Country code:</p><input data-openpay-card-address="country_code" size="3" type="text">
      <input id="makeRequestCard" type="button" value="Make Card">
  </form>
  ```
@@ -109,9 +110,9 @@ The method's params are:
 Later when generating the token, make an invocation to **OpenPay.token.extractFormAndCreate()**, as show below:
 ```javascript
 OpenPay.token.extractFormAndCreate(
-      $('#processCard'), 
-      successCard, 
-      errorCard, 
+      $('#processCard'),
+      successCard,
+      errorCard,
       _customerId);
 ```
 
@@ -119,7 +120,37 @@ The method returns an object type token. The definition of object token find it 
 
 For a complete example, download the test from the github site:[openpay.js](https://github.com/open-pay/openpay-js)
 
-##How to handle responses
+## Updating Cards
+
+Openpay.js allows you to update card information of stored customer cards. This is useful in order to avoid sending this information to your back-end for updating.
+
+The data that can be updated is: Holder name, expiration date, and expiration year. In addition, the API allows to send a CVV that will be used in the next charge with this card.
+The method used for this is:
+**OpenPay.card.update()**
+```javascript
+OpenPay.card.update(UPDATE_CARD_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CLIENTE-ID}, CARD_ID);
+```
+
+You can find the definition of the UPDATE_CARD_OBJECT [here](http://docs.openpay.mx/#actualizar-c-digo-de-seguridad-de-tarjeta)
+
+## Creating Group Tokens
+If your Merchant account is part of a group of merchants, you can use the library to create shared group tokens. To do so, you must first configure
+your group credentials:
+
+```javascript
+OpenPay.Group.setId('GROUP_ID');
+OpenPay.Group.setApiKey('PUBLIC_API_KEY');
+```
+
+You can then use the following methods in the same way as with regular tokens:
+
+```javascript
+OpenPay.Group.token.create(CREATE_PARAMETERS_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK);
+
+OpenPay.Group.token.extractFormAndCreate(CREATE_FORM_OBJECT, SUCCESS_CALLBACK, ERROR_CALLBACK, {CLIENTE-ID});
+```
+
+## How to handle responses
 The response functions serve as handles of the result of the transaction. These, are simple Javascript functions but receive and object type response.
 
 The response object fields are described below:
@@ -135,7 +166,7 @@ The response object fields are described below:
 | :------------- |
 |* Although the response functions are optional, we recommend to implement the outcome of the transaction can be monitored on the website.|
 
-###On success: SuccessCallback
+### On success: SuccessCallback
 This function is called when the operation is successful from start to finish. It receives a single parameter which is a Javascript object with a data property representing a [card](http://docs.openpay.mx/#tarjetas) or a [token](http://docs.openpay.mx/#tokens) object.
 Complete example of implementing a function SuccessCallback:
 ```javascript
@@ -150,7 +181,7 @@ function SuccessCallback(response) {
 }
 ```
 
-###In case of error: ErrorCallback
+### In case of error: ErrorCallback
 This function will be executed each time an operation has failed (for any reason, before or after sending the request). Like the method **SuccessCallback()**, takes a single parameter which is a Javascript object with detailed fault.
 
 Complete example of implementing a function ErrorCallback:
@@ -166,10 +197,10 @@ function ErrorCallback(response) {
 }
 ```
 
-###Types error responses
+### Types error responses
 In addition to the status field that saves the state of the transaction, it is possible to determine the error that happened through the message field. The message may be one of the following:
 
-* **"Empty or invalid OpenPay ID"**: It happens when you have not properly configured the user ID with the OpenPay.setId () method 
+* **"Empty or invalid OpenPay ID"**: It happens when you have not properly configured the user ID with the OpenPay.setId () method
 * **"Empty or invalid API Key"**: Like the above error happens when you have not configured your API Key with OpenPay.setApiKey () method
 * **"Browser error"**: It is triggered when there is an error in the browser that prevents the request to succeed. It may be caused by caracterísiticas that are necessary to run some code and are missing in the browser. For more information see the "Compatibility and Requirements" section.
 * **"Request error"**: This error indicates that an error occurred in the server Openpay. May be due to missing parameters, formats, or some other problem that prevents a successful transaction.
@@ -177,7 +208,7 @@ In addition to the status field that saves the state of the transaction, it is p
 * **"Timeout after X milliseconds"**: Thrown when the request has taken a long time to run and therefore the response time expires.
 * **"Unknown error"**: Raised when there is an unknown error that prevents the request is made. It may be due to problems in the browser or connectivity.
 
-##Card Validation Functions
+## Card Validation Functions
 Besides the functions to process card charges, Openpay.js also includes some functions to validate key data necessary to carry out the transaction, especially regarding card numbers.
 
 Available methods are:
@@ -187,10 +218,10 @@ Available methods are:
 * `OpenPay.card.validateExpiry()`
 * `OpenPay.card.cardType()`
 
-###Number card validation
+### Number card validation
 To validate a card number can use the method **OpenPay.card.validateCardNumber()**.
 
-This method receives as parameter a String with the card number to be validated and return one true / false if it is a valid card number and is accepted by Openpay. 
+This method receives as parameter a String with the card number to be validated and return one true / false if it is a valid card number and is accepted by Openpay.
 Example:
 ```javascript
 OpenPay.card.validateCardNumber('5555555555554444');
@@ -203,7 +234,7 @@ OpenPay.card.validateCardNumber('5555555555554444'); // TRUE. Valid card number 
 
 OpenPay.card.validateCardNumber('378282246310005'); // FALSE. Number of valid card but not accepted by OpenPay (AMEX)
 ```
-###Security Code Validation
+### Security Code Validation
 To validate a security code is used the method **OpenPay.card.validateCVC()**.
 
 This method takes a String as a parameter and returns true / false if the string is valid. Example:
@@ -212,16 +243,18 @@ OpenPay.card.validateCVC('123'); // válido
 OpenPay.card.validateCVC('1234'); // válido
 OpenPay.card.validateCVC('A23'); // inválido
 ```
-###Expiration date validation
+### Expiration date validation
 For this purpose is used the method **OpenPay.card.validateExpiry()**.
 
 Receive two strings as parameters to represent the month and year of expiry of the card. Returns true / false if the combination of both data, month and year, determine a valid expiration date. Example:
 ```javascript
 OpenPay.card.validateExpiry('01', '2013'); // inválido
-OpenPay.card.validateExpiry('05', '2015'); // válido
+OpenPay.card.validateExpiry('01', '13'); // inválido
+OpenPay.card.validateExpiry('05', '2030'); // válido
+OpenPay.card.validateExpiry('05', '30'); // válido
 ```
 
-###Card Type
+### Card Type
 The type of card that a card number belongs to can be determined most of the time. For this, use the method **OpenPay.card.cardType()**.
 
 The method receives as a parameter a card number and returns a String with the name of the card type. Examples:
@@ -235,11 +268,11 @@ OpenPay.card.cardType('6011111111111117'); // Discover
 OpenPay.card.cardType('3530111333300000'); // JCB
 ```
 
-##Fraud detection using device data
+## Fraud detection using device data
 OpenPay can use the device information of a transaction in order to better detect fraudulent transactions.
 To do this, add the following code to your checkout page, when collecting payment information:
 ```HTML
-<script type="text/javascript" src="https://resources.openpay.mx/lib/openpay-data.v1.min.js"></script>
+<script type="text/javascript" src="https://resources.openpay.mx/lib/openpay-data-js/1.2.38/openpay-data.v1.min.js"></script>
 ```
 
 Then, in your javascript, call OpenPay.deviceData.setup() to generate a Device Data.
@@ -252,13 +285,13 @@ var deviceDataId = OpenPay.deviceData.setup("formId");
 
 This method generates an identifier for the customer's device data. This value needs to be stored during checkout, and sent to OpenPay when processing the charge.
 
-The method takes two optional parameters: 
+The method takes two optional parameters:
 
-The first is an existing form's id. If given, a new hidden input field will be added to it, with the value of the generated deviceDataId. 
+The first is an existing form's id. If given, a new hidden input field will be added to it, with the value of the generated deviceDataId.
 
 The second parameter specifies the generated field's name and id. If ommited, they will default to "deviceDataId".
 
-##Compatibility and requirements
+## Compatibility and requirements
 To use Openpay.js You must have one of the following browsers:
 
 * Chrome 29.0+
