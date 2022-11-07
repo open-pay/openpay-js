@@ -2,20 +2,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es-ES">
 <head profile="http://gmpg.org/xfn/11">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay.v1.js"></script>
+<script type='text/javascript' src="../lib/openpay.v1.js"></script>
 <!-- Add openpay-data.v1.js after opnepay.v1.js -->
-<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.js"></script>
+<script type='text/javascript' src="../lib/openpay-data.v1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	OpenPay.setSandboxMode(true);
+	generateToken();
 
-	// Setup Form after calling setSandboxMode
-	var deviceDataId = OpenPay.deviceData.setup("openpayForm", "deviceIdField");
-	//var deviceDataId = OpenPay.deviceData.setup();
-	
-	$('#deviceId').text(deviceDataId);
-	$('#deviceSessionId').val($('#deviceIdField').val());
+	function generateToken(){
+		setMode($('#mode').val());
+		OpenPay.setId($('#id').val());
+		OpenPay.setApiKey($('#apiKey').val());
+		cleanCurrentDeviceSessionId();
+		var deviceDataId = OpenPay.deviceData.setup("openpayForm", "deviceIdField");
+		$('#deviceId').text(deviceDataId);
+		$('#deviceSessionId').val($('#deviceIdField').val());
+	}
+
+	function setMode(mode){
+		if(mode ==='Sandbox'){
+			OpenPay.setSandboxMode(true);
+		} else if(mode === 'Develop'){
+			OpenPay.setDevelopMode(true);
+		} else {
+			OpenPay.setSandboxMode(false);
+			OpenPay.setDevelopMode(false);
+		}
+	}
+
+	function cleanCurrentDeviceSessionId(){
+		// Only for test purpose. This shouldn't be implemented in Production environment.
+		$('#deviceIdField').remove();
+		OpenPay.deviceData['_deviceDataId'] = undefined;
+	}
+
+	$('#generateDeviceSessionId').click(function(e){
+		generateToken();
+	});
 });
 
 </script>
@@ -50,38 +74,33 @@ p {
 	font-size: 12px;
 	width: 100%;
 }
-.inputTextarea {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	height: 280px;
-	width: 100%;
-}
 label {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 }
 </style>
 <body>
-<h1>OpenPay Javascript API Library Test</h1>
+<h1>OpenPay Javascript Antifraud Library Test</h1>
 
 <div class="table">
 	<div class="tableRow">
 		<div class="tableCell">
 			<p>Mode:</p>
 			<select id="mode" class="inputSelect disableOnSubmit">
-				<option value="true">Sandbox</option>
-				<option value="false">Production</option>
+				<option value="Develop">Develop</option>
+				<option value="Sandbox">Sandbox</option>
+				<option value="Production">Production</option>
 			</select>
 		</div>
 	</div>
 	<div class="tableRow">
 		<div class="tableCell">
 			<p>Merchant ID:</p>
-			<input type="text" class="inputText disableOnSubmit" id="id" value="mqxn16kmicqj2fde6fhi" size="50" />
+			<input type="text" class="inputText disableOnSubmit" id="id" value="mzs3eg2l0g66lwr5zwr4" size="50" />
 		</div>
 		<div class="tableCell">
 			<p>Request API Key:</p>
-			<input type="text" class="inputText disableOnSubmit" id="apiKey" value="pk_c74367b872364e91b3143c5d87d64bb8" size="50" />
+			<input type="text" class="inputText disableOnSubmit" id="apiKey" value="pk_18e9f14ae9484102b3d7a67369e064e1" size="50" />
 		</div>
 	</div>
 </div>
@@ -89,7 +108,7 @@ label {
 <div class="table">
 <form id="openpayForm">
 <fieldset>
-  <legend>SessionId</legend>
+	<legend>SessionId</legend>
   	<div class="tableRow">
 		<div class="tableCell">
 			<p>Generated Session Id: <span id="deviceId"></span></p>
@@ -99,6 +118,11 @@ label {
 		<div class="tableCell">
 			<p>Hidden value:</p>
 			<input type="text" class="inputText disableOnSubmit" id="deviceSessionId" size="50"/>
+		</div>
+	</div>
+	<div class="tableRow">
+		<div class="tableCell">
+			<input type="button" class="disableOnSubmit" id="generateDeviceSessionId" value="Generate" />
 		</div>
 	</div>
 </fieldset>
