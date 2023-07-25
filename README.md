@@ -297,7 +297,7 @@ To use Openpay.js You must have one of the following browsers:
 * Chrome 29.0+
 * Firefox 23.0+
 * Safari 5.1+
-* Opera 17.0+
+* Opera 17.0
 * iOS Safari 4.0+
 * Android Browser 2.1+
 * Blackberry Browser 7.0+
