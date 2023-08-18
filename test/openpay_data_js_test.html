@@ -1,110 +1,65 @@
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="es-ES">
-<head profile="http://gmpg.org/xfn/11">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay.v1.js"></script>
-<!-- Add openpay-data.v1.js after opnepay.v1.js -->
-<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	OpenPay.setSandboxMode(true);
-
-	// Setup Form after calling setSandboxMode
-	var deviceDataId = OpenPay.deviceData.setup("openpayForm", "deviceIdField");
-	//var deviceDataId = OpenPay.deviceData.setup();
-	
-	$('#deviceId').text(deviceDataId);
-	$('#deviceSessionId').val($('#deviceIdField').val());
-});
-
-</script>
-<style type="text/css">
-.tableCell {
-	width: 48%;
-	display: table-cell;
-	padding: 10px;
-}
-.tableRow {
-	width: 800px;
-	display: table-row;
-}
-p {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-weight: bold;
-	color: #333;
-	margin-top: 5px;
-	margin-right: 0px;
-	margin-bottom: 8px;
-	margin-left: 0px;
-}
-.table {
-	display: table;
-	width: 800px;
-	padding: 5px;
-	margin: 0px;
-}
-.inputText {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	width: 100%;
-}
-.inputTextarea {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	height: 280px;
-	width: 100%;
-}
-label {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-}
-</style>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113.6">
+  <style type="text/css">
+    p.p2 {margin: 0.0px 0.0px 8.0px 0.0px; font: 14.0px Arial; color: #262626; -webkit-text-stroke: #262626}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Times; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #ffffff}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); min-height: 13.0px}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Arial; color: #000000; -webkit-text-stroke: #000000}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    span.s1 {font-kerning: none}
+    span.s2 {font: 11.0px 'Helvetica Neue'; font-kerning: none}
+    span.s3 {font-kerning: none; background-color: #ffffff}
+    span.s4 {font: 12.0px Times; font-kerning: none}
+    span.Apple-tab-span {white-space:pre}
+    table.t1 {padding: 5.0px 5.0px 5.0px 5.0px}
+    td.td1 {width: 380.0px; margin: 0.5px 0.5px 0.5px 0.5px; padding: 10.0px 10.0px 10.0px 10.0px}
+    td.td2 {width: 613.3px; margin: 0.5px 0.5px 0.5px 0.5px; padding: 10.0px 10.0px 10.0px 10.0px}
+  </style>
+</head>
 <body>
-<h1>OpenPay Javascript API Library Test</h1>
-
-<div class="table">
-	<div class="tableRow">
-		<div class="tableCell">
-			<p>Mode:</p>
-			<select id="mode" class="inputSelect disableOnSubmit">
-				<option value="true">Sandbox</option>
-				<option value="false">Production</option>
-			</select>
-		</div>
-	</div>
-	<div class="tableRow">
-		<div class="tableCell">
-			<p>Merchant ID:</p>
-			<input type="text" class="inputText disableOnSubmit" id="id" value="mqxn16kmicqj2fde6fhi" size="50" />
-		</div>
-		<div class="tableCell">
-			<p>Request API Key:</p>
-			<input type="text" class="inputText disableOnSubmit" id="apiKey" value="pk_c74367b872364e91b3143c5d87d64bb8" size="50" />
-		</div>
-	</div>
-</div>
-
-<div class="table">
-<form id="openpayForm">
-<fieldset>
-  <legend>SessionId</legend>
-  	<div class="tableRow">
-		<div class="tableCell">
-			<p>Generated Session Id: <span id="deviceId"></span></p>
-		</div>
-	</div>
-	<div class="tableRow">
-		<div class="tableCell">
-			<p>Hidden value:</p>
-			<input type="text" class="inputText disableOnSubmit" id="deviceSessionId" size="50"/>
-		</div>
-	</div>
-</fieldset>
-</form>
-</div>
-
-
+<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; font: 24.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>OpenPay Javascript API Library Test</b></span></h1>
+<table cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="baseline" class="td1">
+        <p class="p2"><span class="s1"><b>Mode:</b></span></p>
+        <p class="p3"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s1">Sandbox</span></p>
+        <p class="p3"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s1">Production</span></p>
+        <p class="p4"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="baseline" class="td1">
+        <p class="p2"><span class="s1"><b>Merchant ID:</b></span></p>
+        <p class="p5"><span class="s3">mq6zywemrwcksrnennk5</span><span class="s4"><span class="Apple-converted-space"> </span></span></p>
+      </td>
+      <td valign="baseline" class="td1">
+        <p class="p2"><span class="s1"><b>Request API Key:</b></span></p>
+        <p class="p5"><span class="s3">sk_03a2cd99514745148e28ce1341dd3c5a</span><span class="s4"><span class="Apple-converted-space"> </span></span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p6"><span class="s1">SessionId</span></p>
+<table cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="baseline" class="td2">
+        <p class="p2"><span class="s1"><b>Generated Session Id:<span class="Apple-converted-space"> </span></b></span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="baseline" class="td2">
+        <p class="p2"><span class="s1"><b>Hidden value:</b></span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 </body>
 </html>
